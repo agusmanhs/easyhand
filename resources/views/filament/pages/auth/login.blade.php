@@ -1,98 +1,213 @@
-<div class="flex min-h-screen bg-white">
-    <!-- Left Side: Branding / Background -->
-    <div class="hidden lg:flex lg:w-1/2 bg-slate-800 text-white p-16 flex-col justify-between relative overflow-hidden">
-        <!-- Abstract Background -->
-        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-        <div class="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-[#b1773a] opacity-20 rounded-full blur-[100px]"></div>
-        
-        <div class="relative z-10">
-            <h1 class="text-2xl font-bold text-[#b1773a] mb-12" style="font-family: 'Playfair Display', serif;">EasyHand</h1>
-            
-            <h2 class="text-5xl font-bold mb-6 leading-tight">Seamless payments,<br>global velocity.</h2>
-            <p class="text-lg text-slate-300 max-w-md leading-relaxed">
-                Join thousands of businesses managing their finances with the speed and precision of modern SaaS architecture.
-            </p>
-        </div>
+<div class="min-h-screen flex w-full">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-fixed-dim": "#ffb77d",
+                        "on-secondary-fixed": "#121c2a",
+                        "tertiary-container": "#737576",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#141b2b",
+                        "on-primary-fixed-variant": "#6e3900",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#dce2f7",
+                        "primary": "#8d4b00",
+                        "background": "#f9f9ff",
+                        "on-surface-variant": "#554336",
+                        "tertiary-fixed-dim": "#c5c7c8",
+                        "on-secondary-container": "#596374",
+                        "on-error": "#ffffff",
+                        "surface-container": "#e9edff",
+                        "on-background": "#141b2b",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#bdc7db",
+                        "surface-dim": "#d3daef",
+                        "on-primary-container": "#fffbff",
+                        "surface-bright": "#f9f9ff",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "inverse-primary": "#ffb77d",
+                        "tertiary-fixed": "#e1e3e4",
+                        "on-tertiary": "#ffffff",
+                        "surface-tint": "#904d00",
+                        "secondary": "#555f70",
+                        "on-tertiary-fixed-variant": "#454748",
+                        "primary-fixed": "#ffdcc3",
+                        "outline": "#887364",
+                        "surface": "#f9f9ff",
+                        "surface-container-high": "#e1e8fd",
+                        "secondary-fixed": "#d9e3f7",
+                        "surface-container-low": "#f1f3ff",
+                        "on-tertiary-container": "#fcfdfe",
+                        "on-secondary-fixed-variant": "#3d4757",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed": "#2f1500",
+                        "primary-container": "#b15f00",
+                        "surface-variant": "#dce2f7",
+                        "inverse-surface": "#293040",
+                        "inverse-on-surface": "#edf0ff",
+                        "tertiary": "#5a5c5d",
+                        "on-tertiary-fixed": "#191c1d",
+                        "outline-variant": "#dbc2b0",
+                        "secondary-container": "#d6e0f4"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "container-max": "1280px",
+                        "xl": "32px",
+                        "md": "16px",
+                        "xxl": "48px",
+                        "gutter": "24px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "base": "4px",
+                        "lg": "24px"
+                    },
+                    fontFamily: {
+                        "button-text": ["Inter"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "body-sm": ["Inter"],
+                        "label-caps": ["JetBrains Mono"],
+                        "display-lg-mobile": ["Plus Jakarta Sans"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Plus Jakarta Sans"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-effect { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .shadow-soft { box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05); }
+        .shadow-elevated { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); }
+        .fi-layout { padding: 0 !important; margin: 0 !important; max-width: 100% !important; }
+        .fi-main { padding: 0 !important; margin: 0 !important; }
+        .fi-logo { display: none !important; }
+    </style>
 
-        <!-- Mock Credit Card -->
-        <div class="relative z-10">
-            <div class="bg-white/20 backdrop-blur-md border border-white/20 p-8 rounded-2xl w-full max-w-md shadow-2xl">
-                <div class="flex justify-between items-start mb-12">
-                    <div class="w-16 h-10 bg-white/30 rounded-md"></div>
-                    <div class="w-8 h-8 rounded-full border border-white/50 flex items-center justify-center">
-                        <div class="w-4 h-4 rounded-full border border-white/50"></div>
+    <main class="w-full min-h-screen flex flex-col md:flex-row">
+        <!-- Left Side: Branding & Illustration (Hidden on mobile) -->
+        <section class="hidden md:flex md:w-1/2 lg:w-3/5 bg-inverse-surface relative overflow-hidden items-center justify-center p-xxl">
+            <!-- Background Decorative Elements -->
+            <div class="absolute top-0 left-0 w-full h-full opacity-20">
+                <div class="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-primary-container blur-[120px]"></div>
+                <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-secondary-container blur-[100px]"></div>
+            </div>
+            
+            <!-- Content on Branding Side -->
+            <div class="relative z-10 max-w-lg text-inverse-on-surface">
+                <div class="mb-lg">
+                    <span class="font-headline-md text-[24px] font-bold text-primary-fixed-dim">EasyHand</span>
+                </div>
+                <h1 class="font-display-lg text-[48px] leading-[56px] tracking-[-0.02em] font-bold mb-md">Seamless payments, global velocity.</h1>
+                <p class="font-body-lg text-[18px] text-surface-variant opacity-90 mb-xxl">
+                    Join thousands of businesses managing their finances with the speed and precision of modern SaaS architecture.
+                </p>
+                
+                <!-- Featured Card Illustration -->
+                <div class="glass-effect rounded-[24px] p-lg shadow-elevated border border-white/10 relative">
+                    <div class="flex items-center justify-between mb-lg">
+                        <div class="h-10 w-16 bg-white/20 rounded-lg"></div>
+                        <span class="material-symbols-outlined text-primary-fixed-dim">contactless</span>
+                    </div>
+                    <div class="space-y-sm mb-lg">
+                        <div class="h-2 w-32 bg-white/30 rounded"></div>
+                        <div class="h-2 w-48 bg-white/20 rounded"></div>
+                    </div>
+                    <div class="flex justify-between items-end">
+                        <div class="font-label-caps text-[12px] tracking-[0.05em] font-medium text-white/60">ACTIVE ACCOUNT</div>
+                        <div class="font-headline-md text-[24px] font-semibold text-white">$42,910.00</div>
                     </div>
                 </div>
-                <div class="space-y-3 mb-8">
-                    <div class="h-2 w-32 bg-white/40 rounded-full"></div>
-                    <div class="h-2 w-48 bg-white/20 rounded-full"></div>
+            </div>
+            <!-- Background Image Integration -->
+            <div class="absolute inset-0 z-0 opacity-10 pointer-events-none" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB4FuG9ZaYuHdp_ffqfqpjhLWHmonjzjyHFW5Wp_b-L7mKdKzwwQd0QgeDUulNwTnLAPr5T0mB0oNun6EQ8J8xu7jvX2BX2nMqJeaGqSnsLElNMfkbNZSyYinn1SO961m0Lulbb2CN7GIW9bs7Ifcr6yEl14hL8M9pIMVSxVqx8QV9viVmovX2Tt-kLE2eINtsAubbAufXfHJ7Dckrv8FNyt9jtUvWUbCGre5jfw7RIsMip_YiKgvp2n2Ahsfgy0JVmap5d0SO8Zgo'); background-size: cover; background-position: center;"></div>
+        </section>
+
+        <!-- Right Side: Login Form -->
+        <section class="w-full md:w-1/2 lg:w-2/5 flex items-center justify-center bg-surface px-gutter py-xxl">
+            <div class="w-full max-w-md">
+                <!-- Mobile Logo -->
+                <div class="md:hidden mb-xxl flex justify-center">
+                    <span class="font-headline-md text-[24px] font-bold text-primary">EasyHand</span>
                 </div>
-                <div class="flex justify-between items-end">
-                    <div class="text-xs tracking-[0.2em] text-white/60 uppercase">Active Account</div>
-                    <div class="text-2xl font-semibold">$42,910.00</div>
+                
+                <div class="text-left mb-xl">
+                    <h2 class="font-headline-md text-[24px] font-semibold text-on-surface mb-xs">Welcome back</h2>
+                    <p class="font-body-sm text-[14px] text-on-surface-variant">Enter your credentials to access your account</p>
+                </div>
+                
+                <!-- Social Logins -->
+                <div class="grid grid-cols-2 gap-md mb-xl">
+                    <button class="flex items-center justify-center gap-sm py-sm px-md border border-outline-variant rounded-xl font-button-text text-[15px] font-semibold hover:bg-surface-container-low transition-all active:scale-95 duration-100">
+                        <img alt="Google" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIUKZDEcM6TeeuYmEFhb0O0tJT7BiBzzChNpy5gKxWui1MfHr3tBvDtMTrwm-Vi1N1GLugdzzZBXDJ0eWfEoQNWr9N8GNjAOv-3ZH8ktQIMNTAR4HG1f_UuKNKGuZej7Tuqh0-OASAPiBNtJNKKXuVxqNwDibD3F0xgN-1bV142i91m66q5p054mkFmNFJlS6lilA2X6OHfZkkyh7oerwdUB2TbDJ9w1PQn4b4HNJcG7okliAoXB7-Q2vIuLcN4kL-wfIW2xEae7o"/>
+                        <span>Google</span>
+                    </button>
+                    <button class="flex items-center justify-center gap-sm py-sm px-md border border-outline-variant rounded-xl font-button-text text-[15px] font-semibold hover:bg-surface-container-low transition-all active:scale-95 duration-100">
+                        <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">file_download</span>
+                        <span>Apple</span>
+                    </button>
+                </div>
+                
+                <div class="relative flex items-center mb-xl">
+                    <div class="flex-grow border-t border-outline-variant"></div>
+                    <span class="flex-shrink mx-md font-label-caps text-[12px] font-medium tracking-[0.05em] text-on-surface-variant">OR EMAIL</span>
+                    <div class="flex-grow border-t border-outline-variant"></div>
+                </div>
+
+                <!-- Filament Form -->
+                <div class="[&>form>div>div>div:first-child>div>div]:text-sm [&>form>div>div>div:first-child>div>div]:font-semibold [&>form>div>div>div:first-child>div>div]:text-on-surface">
+                    <x-filament-panels::form wire:submit="authenticate">
+                        {{ $this->form }}
+
+                        <x-filament-panels::form.actions
+                            :actions="$this->getCachedFormActions()"
+                            :full-width="$this->hasFullWidthFormActions()"
+                            class="mt-6 [&_button]:bg-primary [&_button:hover]:opacity-90 [&_button]:rounded-xl [&_button]:py-3 [&_button]:text-[15px] [&_button]:shadow-soft"
+                        />
+                    </x-filament-panels::form>
+                </div>
+                
+                <p class="mt-xxl text-center font-body-sm text-[14px] text-on-surface-variant">
+                    Don't have an account? 
+                    <a class="text-primary font-bold hover:underline" href="#">Register for an account</a>
+                </p>
+                
+                <!-- Footer Links (Mobile Only) -->
+                <div class="md:hidden mt-xxl flex flex-wrap justify-center gap-md font-body-sm text-[14px] text-on-surface-variant opacity-60">
+                    <a class="hover:text-primary" href="#">Terms</a>
+                    <a class="hover:text-primary" href="#">Privacy</a>
+                    <a class="hover:text-primary" href="#">Support</a>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
 
-    <!-- Right Side: Login Form -->
-    <div class="w-full lg:w-1/2 flex flex-col justify-center p-8 sm:p-12 lg:p-24 relative">
-        <div class="w-full max-w-md mx-auto">
+    <script>
+        document.addEventListener('mousemove', (e) => {
+            const blobs = document.querySelectorAll('.rounded-full');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
             
-            <!-- Mobile Header (Visible only on small screens) -->
-            <div class="lg:hidden mb-10 text-center">
-                <h1 class="text-3xl font-bold text-[#b1773a]" style="font-family: 'Playfair Display', serif;">EasyHand</h1>
-            </div>
-
-            <div class="mb-10">
-                <h2 class="text-3xl font-bold text-gray-900 mb-2">Welcome back</h2>
-                <p class="text-gray-500">Enter your credentials to access your account</p>
-            </div>
-
-            <!-- Social Logins -->
-            <div class="flex gap-4 mb-8">
-                <button class="w-1/2 flex items-center justify-center gap-2 border border-gray-200 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-50 transition text-gray-700">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 15.01 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/><path d="M1 1h22v22H1z" fill="none"/></svg>
-                    Google
-                </button>
-                <button class="w-1/2 flex items-center justify-center gap-2 border border-gray-200 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-50 transition text-gray-700">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.04 2.26-.79 3.59-.76 1.03.02 2.01.37 2.76 1.07-2.69 1.64-2.24 5.37.45 6.47-.63 1.91-1.63 3.75-2.88 5.39zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
-                    Apple
-                </button>
-            </div>
-
-            <div class="relative flex py-5 items-center mb-8">
-                <div class="flex-grow border-t border-gray-200"></div>
-                <span class="flex-shrink-0 mx-4 text-gray-400 text-xs font-semibold tracking-widest uppercase">Or Email</span>
-                <div class="flex-grow border-t border-gray-200"></div>
-            </div>
-
-            <!-- Filament Form -->
-            <div class="[&>form>div>div>div:first-child>div>div]:text-sm [&>form>div>div>div:first-child>div>div]:font-semibold [&>form>div>div>div:first-child>div>div]:text-gray-900">
-                <x-filament-panels::form wire:submit="authenticate">
-                    {{ $this->form }}
-
-                    <x-filament-panels::form.actions
-                        :actions="$this->getCachedFormActions()"
-                        :full-width="$this->hasFullWidthFormActions()"
-                        class="mt-6 [&_button]:bg-[#b1773a] [&_button:hover]:bg-[#9e6931] [&_button]:rounded-lg [&_button]:py-2.5 [&_button]:text-base"
-                    />
-                </x-filament-panels::form>
-            </div>
-
-            <!-- Footer links -->
-            <div class="mt-8 text-center text-sm text-gray-600">
-                Don't have an account? <a href="#" class="text-[#b1773a] font-bold hover:underline">Register for an account</a>
-            </div>
-            
-        </div>
-    </div>
+            blobs.forEach((blob, index) => {
+                const speed = (index + 1) * 20;
+                const xOffset = (x - 0.5) * speed;
+                const yOffset = (y - 0.5) * speed;
+                blob.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
+                blob.style.transition = 'transform 0.2s ease-out';
+            });
+        });
+    </script>
 </div>
-
-<style>
-    /* Clean up Filament base layout padding/margin */
-    .fi-layout { padding: 0 !important; margin: 0 !important; max-width: 100% !important; }
-    .fi-main { padding: 0 !important; margin: 0 !important; }
-    /* Hide filament default logo if any appears */
-    .fi-logo { display: none !important; }
-</style>
