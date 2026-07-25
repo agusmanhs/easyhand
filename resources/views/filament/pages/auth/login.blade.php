@@ -151,11 +151,11 @@
                 
                 <!-- Social Logins -->
                 <div class="grid grid-cols-2 gap-md mb-xl">
-                    <button class="flex items-center justify-center gap-sm py-sm px-md border border-outline-variant rounded-xl font-button-text text-[15px] font-semibold hover:bg-surface-container-low transition-all active:scale-95 duration-100">
+                    <button class="flex items-center justify-center gap-sm py-sm px-md border border-outline-variant rounded-xl font-button-text text-[15px] font-semibold hover:bg-surface-container-low transition-all active:scale-95 duration-100 text-[#141b2b]">
                         <img alt="Google" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIUKZDEcM6TeeuYmEFhb0O0tJT7BiBzzChNpy5gKxWui1MfHr3tBvDtMTrwm-Vi1N1GLugdzzZBXDJ0eWfEoQNWr9N8GNjAOv-3ZH8ktQIMNTAR4HG1f_UuKNKGuZej7Tuqh0-OASAPiBNtJNKKXuVxqNwDibD3F0xgN-1bV142i91m66q5p054mkFmNFJlS6lilA2X6OHfZkkyh7oerwdUB2TbDJ9w1PQn4b4HNJcG7okliAoXB7-Q2vIuLcN4kL-wfIW2xEae7o"/>
                         <span>Google</span>
                     </button>
-                    <button class="flex items-center justify-center gap-sm py-sm px-md border border-outline-variant rounded-xl font-button-text text-[15px] font-semibold hover:bg-surface-container-low transition-all active:scale-95 duration-100">
+                    <button class="flex items-center justify-center gap-sm py-sm px-md border border-outline-variant rounded-xl font-button-text text-[15px] font-semibold hover:bg-surface-container-low transition-all active:scale-95 duration-100 text-[#141b2b]">
                         <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">file_download</span>
                         <span>Apple</span>
                     </button>
@@ -163,7 +163,7 @@
                 
                 <div class="relative flex items-center mb-xl">
                     <div class="flex-grow border-t border-outline-variant"></div>
-                    <span class="flex-shrink mx-md font-label-caps text-[12px] font-medium tracking-[0.05em] text-on-surface-variant">OR EMAIL</span>
+                    <span class="flex-shrink mx-md font-label-caps text-[12px] font-medium tracking-[0.05em] text-[#554336]">OR EMAIL</span>
                     <div class="flex-grow border-t border-outline-variant"></div>
                 </div>
 
@@ -180,13 +180,13 @@
                     </x-filament-panels::form>
                 </div>
                 
-                <p class="mt-xxl text-center font-body-sm text-[14px] text-on-surface-variant">
+                <p class="mt-xxl text-center font-body-sm text-[14px] text-on-surface-variant text-[#554336]">
                     Don't have an account? 
-                    <a class="text-primary font-bold hover:underline" href="#">Register for an account</a>
+                    <a class="text-primary font-bold hover:underline text-[#8d4b00]" href="#">Register for an account</a>
                 </p>
                 
                 <!-- Footer Links (Mobile Only) -->
-                <div class="md:hidden mt-xxl flex flex-wrap justify-center gap-md font-body-sm text-[14px] text-on-surface-variant opacity-60">
+                <div class="md:hidden mt-xxl flex flex-wrap justify-center gap-md font-body-sm text-[14px] text-on-surface-variant opacity-60 text-[#554336]">
                     <a class="hover:text-primary" href="#">Terms</a>
                     <a class="hover:text-primary" href="#">Privacy</a>
                     <a class="hover:text-primary" href="#">Support</a>
@@ -196,6 +196,19 @@
     </main>
 
     <script>
+        // Force remove dark mode class from HTML to prevent Filament forms from turning text white on a white background
+        document.documentElement.classList.remove('dark');
+        
+        // Disable mutations that try to re-add dark mode
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.attributeName === 'class' && document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                }
+            });
+        });
+        observer.observe(document.documentElement, { attributes: true });
+
         document.addEventListener('mousemove', (e) => {
             const blobs = document.querySelectorAll('.rounded-full');
             const x = e.clientX / window.innerWidth;
