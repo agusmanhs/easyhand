@@ -19,8 +19,11 @@ class PurchaseProduct extends Page implements HasForms
     use InteractsWithForms;
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
-    protected static ?string $navigationLabel = 'Beli Pulsa & Data';
+    protected static ?string $navigationLabel = 'Transaksi Produk';
     protected static ?string $title = 'Pembelian Produk';
+    
+    // Hide from sidebar to force users to use Dashboard icons
+    protected static bool $shouldRegisterNavigation = false;
 
     protected static string $view = 'filament.member.pages.purchase-product';
 

@@ -3,7 +3,7 @@
     :field="$field"
 >
     <div x-data="{ state: $wire.entangle('{{ $getStatePath() }}') }">
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-2">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-2 mb-8">
             @foreach($this->availableProducts as $product)
                 @php
                     $markup = auth()->user()->markup ?? 500;
