@@ -23,9 +23,11 @@ class PurchaseProduct extends Page implements HasForms
     protected static string $view = 'filament.member.pages.purchase-product';
 
     public ?array $data = [];
+    public ?string $service = 'pulsa'; // Default to pulsa
 
     public function mount(): void
     {
+        $this->service = request()->query('service', 'pulsa');
         $this->form->fill();
     }
 
@@ -66,10 +68,21 @@ class PurchaseProduct extends Page implements HasForms
                         
                         $markup = auth()->user()->markup ?? 500;
                         
-                        $query = Product::where('seller_product_status', true)
-                                        ->whereIn('category', ['Pulsa', 'Data', 'Paket SMS & Telpon', 'Masa Aktif']);
+                        $query = Product::where('seller_product_status', true);
+                        
+                        // Map the requested service to Digiflazz categories
+                        $service = $this->service;
+                        if ($service === 'pulsa') {
+                            $query->whereIn('category', ['Pulsa', 'Paket SMS & Telpon', 'Masa Aktif']);
+                        } elseif ($service === 'data') {
+                            $query->whereIn('category', ['Data', 'Aktivasi Perdana', 'Aktivasi Voucher', 'Voucher']);
+                        } elseif ($service === 'pln') {
+                            $query->whereIn('category', ['PLN']);
+                        } elseif ($service === 'pdam') {
+                            $query->whereIn('category', ['PDAM']);
+                        }
                                         
-                        if ($brand) {
+                        if ($brand && in_array($service, ['pulsa', 'data'])) {
                             $query->where('brand', $brand);
                         }
                         

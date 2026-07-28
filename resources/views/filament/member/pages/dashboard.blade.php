@@ -163,31 +163,31 @@
                 </div>
 
                 <!-- Quick Services Grid -->
-                <div class="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 lg:grid-cols-4 gap-md">
-                    <a href="{{ url('member/purchase-product') }}" class="flex flex-col items-center justify-center p-md bg-white rounded-3xl border border-outline-variant/30 shadow-sm hover:shadow-md transition-all group">
-                        <div class="w-12 h-12 rounded-2xl bg-primary-container/10 text-primary flex items-center justify-center mb-sm group-hover:scale-110 transition-transform">
-                            <span class="material-symbols-outlined">smartphone</span>
+                <div class="grid grid-cols-4 gap-md mb-lg">
+                    <a href="{{ url('/member/purchase-product?service=pulsa') }}" class="flex flex-col items-center justify-center p-md bg-white rounded-2xl border border-outline-variant/30 hover:border-primary hover:shadow-md transition-all cursor-pointer group active:scale-95">
+                        <div class="w-10 h-10 rounded-full bg-primary-container/30 flex items-center justify-center mb-sm group-hover:bg-primary-container transition-colors">
+                            <span class="material-symbols-outlined text-primary text-[20px]">smartphone</span>
                         </div>
-                        <span class="font-body-sm text-body-sm font-semibold">Pulsa</span>
+                        <span class="text-[11px] font-bold text-on-surface">Pulsa</span>
                     </a>
-                    <button class="flex flex-col items-center justify-center p-md bg-white rounded-3xl border border-outline-variant/30 shadow-sm hover:shadow-md transition-all group">
-                        <div class="w-12 h-12 rounded-2xl bg-secondary-container/10 text-secondary flex items-center justify-center mb-sm group-hover:scale-110 transition-transform">
-                            <span class="material-symbols-outlined">bolt</span>
+                    <a href="{{ url('/member/purchase-product?service=pln') }}" class="flex flex-col items-center justify-center p-md bg-white rounded-2xl border border-outline-variant/30 hover:border-secondary hover:shadow-md transition-all cursor-pointer group active:scale-95">
+                        <div class="w-10 h-10 rounded-full bg-secondary-container/30 flex items-center justify-center mb-sm group-hover:bg-secondary-container transition-colors">
+                            <span class="material-symbols-outlined text-secondary text-[20px]">bolt</span>
                         </div>
-                        <span class="font-body-sm text-body-sm font-semibold">PLN</span>
-                    </button>
-                    <button class="flex flex-col items-center justify-center p-md bg-white rounded-3xl border border-outline-variant/30 shadow-sm hover:shadow-md transition-all group">
-                        <div class="w-12 h-12 rounded-2xl bg-error-container/10 text-error flex items-center justify-center mb-sm group-hover:scale-110 transition-transform">
-                            <span class="material-symbols-outlined">wifi</span>
+                        <span class="text-[11px] font-bold text-on-surface">PLN</span>
+                    </a>
+                    <a href="{{ url('/member/purchase-product?service=data') }}" class="flex flex-col items-center justify-center p-md bg-white rounded-2xl border border-outline-variant/30 hover:border-tertiary hover:shadow-md transition-all cursor-pointer group active:scale-95">
+                        <div class="w-10 h-10 rounded-full bg-tertiary-container/30 flex items-center justify-center mb-sm group-hover:bg-tertiary-container transition-colors">
+                            <span class="material-symbols-outlined text-tertiary text-[20px]">wifi</span>
                         </div>
-                        <span class="font-body-sm text-body-sm font-semibold">Data</span>
-                    </button>
-                    <button class="flex flex-col items-center justify-center p-md bg-white rounded-3xl border border-outline-variant/30 shadow-sm hover:shadow-md transition-all group">
-                        <div class="w-12 h-12 rounded-2xl bg-surface-container-highest text-tertiary flex items-center justify-center mb-sm group-hover:scale-110 transition-transform">
-                            <span class="material-symbols-outlined">water_drop</span>
+                        <span class="text-[11px] font-bold text-on-surface">Data</span>
+                    </a>
+                    <a href="{{ url('/member/purchase-product?service=pdam') }}" class="flex flex-col items-center justify-center p-md bg-white rounded-2xl border border-outline-variant/30 hover:border-error hover:shadow-md transition-all cursor-pointer group active:scale-95">
+                        <div class="w-10 h-10 rounded-full bg-error-container/30 flex items-center justify-center mb-sm group-hover:bg-error-container transition-colors">
+                            <span class="material-symbols-outlined text-error text-[20px]">water_drop</span>
                         </div>
-                        <span class="font-body-sm text-body-sm font-semibold">PDAM</span>
-                    </button>
+                        <span class="text-[11px] font-bold text-on-surface">PDAM</span>
+                    </a>
                 </div>
             </section>
 
