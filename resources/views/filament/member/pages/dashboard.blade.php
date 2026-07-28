@@ -223,7 +223,7 @@
                             <div class="w-10 h-10 rounded-full bg-{{ $style['bg'] }} flex items-center justify-center mb-sm group-hover:brightness-95 transition-colors">
                                 <span class="material-symbols-outlined text-{{ $style['color'] }} text-[20px]">{{ $style['icon'] }}</span>
                             </div>
-                            <span class="text-[10px] font-bold text-on-surface line-clamp-2 leading-tight">{{ title_case(strtolower($brand)) }}</span>
+                            <span class="text-[10px] font-bold text-on-surface line-clamp-2 leading-tight">{{ ucwords(strtolower($brand)) }}</span>
                         </a>
                     @endforeach
                 </div>

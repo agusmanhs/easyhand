@@ -25,7 +25,7 @@ class PurchaseProduct extends Page implements HasForms
     {
         $filter = request()->query('filter');
         if ($filter) {
-            return 'Transaksi ' . title_case(strtolower($filter));
+            return 'Transaksi ' . ucwords(strtolower($filter));
         }
         return 'Pembelian Produk';
     }
