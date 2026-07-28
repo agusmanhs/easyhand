@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Member\Resources;
 
-use App\Filament\Resources\TransactionResource\Pages;
+use App\Filament\Member\Resources\TransactionResource\Pages;
 use App\Models\Transaction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Http;
 use Filament\Notifications\Notification;
 
@@ -17,7 +18,12 @@ class TransactionResource extends Resource
     protected static ?string $model = Transaction::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-currency-dollar';
-    protected static ?string $navigationGroup = 'Master Data';
+    protected static ?string $navigationLabel = 'Riwayat Transaksi';
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('user_id', auth()->id())->latest();
+    }
 
     public static function form(Form $form): Form
     {
@@ -28,7 +34,6 @@ class TransactionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')->label('Member')->searchable(),
                 Tables\Columns\TextColumn::make('ref_id')->label('Ref ID')->searchable(),
                 Tables\Columns\TextColumn::make('customer_no')->label('No. Tujuan')->searchable(),
                 Tables\Columns\TextColumn::make('buyer_sku_code')->label('Kode Produk')->searchable(),
@@ -41,9 +46,9 @@ class TransactionResource extends Resource
                         'Pending' => 'warning',
                         default => 'secondary',
                     }),
+                Tables\Columns\TextColumn::make('sn')->label('SN / Token'),
                 Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable(),
             ])
-            ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])

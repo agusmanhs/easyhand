@@ -164,12 +164,12 @@
 
                 <!-- Quick Services Grid -->
                 <div class="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 lg:grid-cols-4 gap-md">
-                    <button class="flex flex-col items-center justify-center p-md bg-white rounded-3xl border border-outline-variant/30 shadow-sm hover:shadow-md transition-all group">
+                    <a href="{{ url('member/purchase-product') }}" class="flex flex-col items-center justify-center p-md bg-white rounded-3xl border border-outline-variant/30 shadow-sm hover:shadow-md transition-all group">
                         <div class="w-12 h-12 rounded-2xl bg-primary-container/10 text-primary flex items-center justify-center mb-sm group-hover:scale-110 transition-transform">
                             <span class="material-symbols-outlined">smartphone</span>
                         </div>
                         <span class="font-body-sm text-body-sm font-semibold">Pulsa</span>
-                    </button>
+                    </a>
                     <button class="flex flex-col items-center justify-center p-md bg-white rounded-3xl border border-outline-variant/30 shadow-sm hover:shadow-md transition-all group">
                         <div class="w-12 h-12 rounded-2xl bg-secondary-container/10 text-secondary flex items-center justify-center mb-sm group-hover:scale-110 transition-transform">
                             <span class="material-symbols-outlined">bolt</span>
