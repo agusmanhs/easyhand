@@ -17,8 +17,17 @@
                     }"
                     class="cursor-pointer border rounded-2xl p-4 transition-all duration-200 relative overflow-hidden flex flex-col justify-between min-h-[100px]"
                 >
-                    <div class="font-semibold text-sm text-gray-800 line-clamp-2 leading-tight pr-6">
-                        {{ $product->product_name }}
+                    <div class="flex justify-between items-start gap-2">
+                        <div class="font-semibold text-sm text-gray-800 line-clamp-2 leading-tight">
+                            {{ $product->product_name }}
+                        </div>
+                        
+                        <!-- Checkmark for selected state -->
+                        <div x-show="state == '{{ $product->id }}'" class="text-primary-600 flex-shrink-0" style="display: none;">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
                     </div>
                     
                     @if(!$this->isPostpaid())
@@ -30,13 +39,6 @@
                             Tagihan Pascabayar
                         </div>
                     @endif
-                    
-                    <!-- Checkmark for selected state -->
-                    <div x-show="state == '{{ $product->id }}'" class="absolute top-3 right-3 text-primary-600" style="display: none;">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                        </svg>
-                    </div>
                 </div>
             @endforeach
             
@@ -50,5 +52,8 @@
                 </div>
             @endif
         </div>
+        
+        <!-- Spacer untuk memisahkan grid produk dengan tombol Beli/Cek Tagihan -->
+        <div class="h-6 w-full"></div>
     </div>
 </x-dynamic-component>
