@@ -47,6 +47,61 @@ class PurchaseProduct extends Page implements HasForms
         $this->inquiryRefId = null;
     }
 
+    public function getAvailableProductsProperty()
+    {
+        $phone = $this->data['customer_no'] ?? null;
+        $brand = null;
+        
+        if ($phone && strlen($phone) >= 4) {
+            $prefix = substr($phone, 0, 4);
+            $telkomsel = ['0811','0812','0813','0821','0822','0823','0852','0853','0851'];
+            $indosat = ['0814','0815','0816','0855','0856','0857','0858'];
+            $xl = ['0817','0818','0819','0859','0877','0878'];
+            $axis = ['0838','0831','0832','0833'];
+            $tri = ['0895','0896','0897','0898','0899'];
+            $smartfren = ['0881','0882','0883','0884','0885','0886','0887','0888','0889'];
+            
+            if (in_array($prefix, $telkomsel)) $brand = 'TELKOMSEL';
+            elseif (in_array($prefix, $indosat)) $brand = 'INDOSAT';
+            elseif (in_array($prefix, $xl)) $brand = 'XL';
+            elseif (in_array($prefix, $axis)) $brand = 'AXIS';
+            elseif (in_array($prefix, $tri)) $brand = 'TRI';
+            elseif (in_array($prefix, $smartfren)) $brand = 'SMARTFREN';
+        }
+        
+        $query = Product::where('seller_product_status', true);
+        
+        // Map the requested service to Digiflazz categories
+        $service = $this->service;
+        if ($service === 'pulsa') {
+            $query->whereIn('category', ['Pulsa', 'Paket SMS & Telpon', 'Masa Aktif']);
+        } elseif ($service === 'data') {
+            $query->whereIn('category', ['Data', 'Aktivasi Perdana', 'Aktivasi Voucher', 'Voucher']);
+        } elseif ($service === 'pln') {
+            $query->whereIn('category', ['PLN']);
+        } elseif ($service === 'game') {
+            $query->whereIn('category', ['Games']);
+        } elseif ($service === 'ewallet') {
+            $query->whereIn('category', ['E-Money']); 
+        } elseif ($service === 'pdam') {
+            $query->where('category', 'Pascabayar')->where('brand', 'PDAM');
+        } elseif ($service === 'bpjs') {
+            $query->where('category', 'Pascabayar')->where('brand', 'BPJS KESEHATAN');
+        } elseif ($service === 'internet') {
+            $query->where('category', 'Pascabayar')->where('brand', 'INTERNET PASCABAYAR');
+        } elseif ($service === 'hp_pasca') {
+            $query->where('category', 'Pascabayar')->where('brand', 'HP PASCABAYAR');
+        } elseif ($service === 'pln_pasca') {
+            $query->where('category', 'Pascabayar')->where('brand', 'PLN PASCABAYAR');
+        }
+                        
+        if ($brand && in_array($service, ['pulsa', 'data'])) {
+            $query->where('brand', $brand);
+        }
+        
+        return $query->get();
+    }
+
     public function form(Forms\Form $form): Forms\Form
     {
         // Determine dynamic label and placeholder
@@ -79,69 +134,11 @@ class PurchaseProduct extends Page implements HasForms
                     ->placeholder('Misal: 1234')
                     ->hidden(fn () => $this->service !== 'game'),
                     
-                Forms\Components\Select::make('product_id')
+                Forms\Components\ViewField::make('product_id')
                     ->label('Pilih Produk')
                     ->required()
-                    ->searchable()
-                    ->options(function (Forms\Get $get) {
-                        $phone = $get('customer_no');
-                        $brand = null;
-                        
-                        if ($phone && strlen($phone) >= 4) {
-                            $prefix = substr($phone, 0, 4);
-                            $telkomsel = ['0811','0812','0813','0821','0822','0823','0852','0853','0851'];
-                            $indosat = ['0814','0815','0816','0855','0856','0857','0858'];
-                            $xl = ['0817','0818','0819','0859','0877','0878'];
-                            $axis = ['0838','0831','0832','0833'];
-                            $tri = ['0895','0896','0897','0898','0899'];
-                            $smartfren = ['0881','0882','0883','0884','0885','0886','0887','0888','0889'];
-                            
-                            if (in_array($prefix, $telkomsel)) $brand = 'TELKOMSEL';
-                            elseif (in_array($prefix, $indosat)) $brand = 'INDOSAT';
-                            elseif (in_array($prefix, $xl)) $brand = 'XL';
-                            elseif (in_array($prefix, $axis)) $brand = 'AXIS';
-                            elseif (in_array($prefix, $tri)) $brand = 'TRI';
-                            elseif (in_array($prefix, $smartfren)) $brand = 'SMARTFREN';
-                        }
-                        
-                        $markup = auth()->user()->markup ?? 500;
-                        
-                        $query = Product::where('seller_product_status', true);
-                        
-                        // Map the requested service to Digiflazz categories
-                        $service = $this->service;
-                        if ($service === 'pulsa') {
-                            $query->whereIn('category', ['Pulsa', 'Paket SMS & Telpon', 'Masa Aktif']);
-                        } elseif ($service === 'data') {
-                            $query->whereIn('category', ['Data', 'Aktivasi Perdana', 'Aktivasi Voucher', 'Voucher']);
-                        } elseif ($service === 'pln') {
-                            $query->whereIn('category', ['PLN']);
-                        } elseif ($service === 'game') {
-                            $query->whereIn('category', ['Games']);
-                        } elseif ($service === 'ewallet') {
-                            $query->whereIn('category', ['E-Money']); // Adjust if Digiflazz uses different term, usually E-Money or E-Wallet
-                        } elseif ($service === 'pdam') {
-                            $query->where('category', 'Pascabayar')->where('brand', 'PDAM');
-                        } elseif ($service === 'bpjs') {
-                            $query->where('category', 'Pascabayar')->where('brand', 'BPJS KESEHATAN');
-                        } elseif ($service === 'internet') {
-                            $query->where('category', 'Pascabayar')->where('brand', 'INTERNET PASCABAYAR');
-                        } elseif ($service === 'hp_pasca') {
-                            $query->where('category', 'Pascabayar')->where('brand', 'HP PASCABAYAR');
-                        } elseif ($service === 'pln_pasca') {
-                            $query->where('category', 'Pascabayar')->where('brand', 'PLN PASCABAYAR');
-                        }
-                                        
-                        if ($brand && in_array($service, ['pulsa', 'data'])) {
-                            $query->where('brand', $brand);
-                        }
-                        
-                        return $query->get()
-                            ->mapWithKeys(function ($p) use ($markup) {
-                                $finalPrice = $p->price + $markup;
-                                return [$p->id => "{$p->product_name} - Rp " . number_format($finalPrice, 0, ',', '.')];
-                            });
-                    })
+                    ->view('forms.components.product-grid')
+                    ->columnSpanFull()
                     ->reactive(),
             ])
             ->statePath('data');
