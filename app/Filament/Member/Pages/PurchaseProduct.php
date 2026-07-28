@@ -107,7 +107,6 @@ class PurchaseProduct extends Page implements HasForms
                 'customer_no' => $data['customer_no'],
                 'ref_id' => $refId,
                 'sign' => $signature,
-                'testing' => true
             ]);
 
             $result = $response->json();
