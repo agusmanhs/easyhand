@@ -132,7 +132,7 @@
     <div class="stitch-container text-on-surface font-body-md w-full max-w-screen-2xl mx-auto pb-20">
         
         <div class="mb-lg">
-            <h1 class="font-headline-md text-headline-md font-bold text-on-surface">Welcome back, Alex!</h1>
+            <h1 class="font-headline-md text-headline-md font-bold text-on-surface">Welcome back, {{ auth()->user()->name }}!</h1>
             <p class="text-body-sm text-on-surface-variant">Manage your finances with speed and precision.</p>
         </div>
 
@@ -144,17 +144,17 @@
                     <div class="relative z-10 flex justify-between items-start">
                         <div>
                             <p class="font-label-caps text-label-caps text-surface-container-highest opacity-70">AVAILABLE BALANCE</p>
-                            <h2 class="font-display-lg text-display-lg-mobile md:text-display-lg mt-xs">Rp 2.450.000</h2>
+                            <h2 class="font-display-lg text-display-lg-mobile md:text-display-lg mt-xs">{{ 'Rp ' . number_format(auth()->user()->saldo, 0, ',', '.') }}</h2>
                         </div>
                         <div class="bg-white/10 p-sm rounded-xl backdrop-blur-md">
                             <span class="material-symbols-outlined text-[32px]">payments</span>
                         </div>
                     </div>
                     <div class="relative z-10 flex gap-md mt-xl">
-                        <button class="flex-1 py-md bg-brand-orange text-white rounded-xl font-button-text text-button-text flex items-center justify-center gap-sm hover:brightness-110 active:scale-95 transition-all">
+                        <a href="{{ url('member/deposits/create') }}" class="flex-1 py-md bg-brand-orange text-white rounded-xl font-button-text text-button-text flex items-center justify-center gap-sm hover:brightness-110 active:scale-95 transition-all">
                             <span class="material-symbols-outlined">add_circle</span>
                             Top Up
-                        </button>
+                        </a>
                         <button class="flex-1 py-md bg-white/20 text-white rounded-xl font-button-text text-button-text flex items-center justify-center gap-sm hover:bg-white/30 active:scale-95 transition-all backdrop-blur-sm border border-white/20">
                             <span class="material-symbols-outlined">send</span>
                             Send Money
