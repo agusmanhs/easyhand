@@ -49,8 +49,8 @@
             <form wire:submit="submit">
                 {{ $this->form }}
 
-                <div class="mt-4">
-                    <x-filament::button type="submit" size="lg">
+                <div class="mt-8">
+                    <x-filament::button type="submit" size="lg" class="w-full sm:w-auto">
                         {{ $this->isPostpaid() ? 'Cek Tagihan' : 'Beli Sekarang' }}
                     </x-filament::button>
                 </div>

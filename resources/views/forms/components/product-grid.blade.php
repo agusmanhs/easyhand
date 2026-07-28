@@ -21,9 +21,15 @@
                         {{ $product->product_name }}
                     </div>
                     
-                    <div class="mt-3 font-bold text-primary-600 text-sm">
-                        Rp {{ number_format($finalPrice, 0, ',', '.') }}
-                    </div>
+                    @if(!$this->isPostpaid())
+                        <div class="mt-3 font-bold text-primary-600 text-sm">
+                            Rp {{ number_format($finalPrice, 0, ',', '.') }}
+                        </div>
+                    @else
+                        <div class="mt-3 text-gray-500 text-xs italic">
+                            Tagihan Pascabayar
+                        </div>
+                    @endif
                     
                     <!-- Checkmark for selected state -->
                     <div x-show="state == '{{ $product->id }}'" class="absolute top-3 right-3 text-primary-600" style="display: none;">
