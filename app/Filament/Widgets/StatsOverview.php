@@ -16,6 +16,11 @@ class StatsOverview extends BaseWidget
         // Get Total Member Balance
         $totalMemberBalance = User::sum('saldo');
         
+        $totalUsers = User::count();
+        $totalTransactions = \App\Models\Transaction::count();
+        $totalDeposits = \App\Models\Deposit::where('status', 'approved')->sum('amount');
+        $pendingDeposits = \App\Models\Deposit::where('status', 'pending')->count();
+        
         // Get Digiflazz Balance
         $saldoDigiflazz = 0;
         $digiflazzStatus = 'Gagal mengecek saldo';
@@ -63,30 +68,22 @@ class StatsOverview extends BaseWidget
                 ->descriptionIcon($digiflazzColor === 'success' ? 'heroicon-m-check-circle' : 'heroicon-m-x-circle')
                 ->color($digiflazzColor)
                 ->icon('heroicon-o-building-storefront'),
-            Stat::make('TOTAL USERS', '14,285')
-                ->description('+12%')
-                ->descriptionIcon('heroicon-m-arrow-trending-up')
+            Stat::make('TOTAL USERS', number_format($totalUsers, 0, ',', '.'))
+                ->description('Total member terdaftar')
                 ->color('primary')
-                ->chart([7, 2, 10, 3, 15, 4, 17])
                 ->icon('heroicon-o-users'),
-            Stat::make('TRANSACTIONS', '48,902')
-                ->description('+8.4%')
-                ->descriptionIcon('heroicon-m-arrow-trending-up')
+            Stat::make('TRANSACTIONS', number_format($totalTransactions, 0, ',', '.'))
+                ->description('Total transaksi yang diproses')
                 ->color('primary')
-                ->chart([3, 12, 4, 10, 2, 15, 17])
                 ->icon('heroicon-o-document-text'),
-            Stat::make('TOTAL REVENUE', 'Rp 1.24M')
-                ->description('-2.1%')
-                ->descriptionIcon('heroicon-m-arrow-trending-down')
-                ->color('danger')
-                ->chart([17, 16, 14, 15, 14, 13, 12])
+            Stat::make('TOTAL DEPOSIT', 'Rp ' . number_format($totalDeposits, 0, ',', '.'))
+                ->description('Total deposit berhasil')
+                ->color('success')
                 ->icon('heroicon-o-currency-dollar'),
-            Stat::make('ORDERS', '1,894')
-                ->description('+24%')
-                ->descriptionIcon('heroicon-m-arrow-trending-up')
-                ->color('primary')
-                ->chart([15, 4, 10, 2, 12, 4, 12])
-                ->icon('heroicon-o-shopping-cart'),
+            Stat::make('PENDING DEPOSIT', number_format($pendingDeposits, 0, ',', '.'))
+                ->description('Menunggu persetujuan')
+                ->color($pendingDeposits > 0 ? 'warning' : 'primary')
+                ->icon('heroicon-o-clock'),
         ];
     }
 }

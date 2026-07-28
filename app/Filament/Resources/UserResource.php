@@ -31,11 +31,17 @@ class UserResource extends Resource
                 Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\TextInput::make('password')
                     ->password()
-                    ->required(),
+                    ->dehydrated(fn ($state) => filled($state))
+                    ->required(fn (string $context): bool => $context === 'create'),
                 Forms\Components\TextInput::make('saldo')
                     ->required()
                     ->numeric()
                     ->default(0),
+                Forms\Components\TextInput::make('markup')
+                    ->label('Margin / Markup')
+                    ->required()
+                    ->numeric()
+                    ->default(500),
             ]);
     }
 
@@ -51,6 +57,9 @@ class UserResource extends Resource
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('saldo')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('markup')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
