@@ -162,31 +162,77 @@
                     </div>
                 </div>
 
-                <!-- Quick Services Grid -->
+                <!-- Prabayar Section -->
+                <div class="mb-sm flex items-center justify-between">
+                    <h3 class="font-headline-sm text-body-lg font-bold text-on-surface">Prabayar (Isi Ulang)</h3>
+                </div>
                 <div class="grid grid-cols-4 gap-md mb-lg">
-                    <a href="{{ url('/member/purchase-product?service=pulsa') }}" class="flex flex-col items-center justify-center p-md bg-white rounded-2xl border border-outline-variant/30 hover:border-primary hover:shadow-md transition-all cursor-pointer group active:scale-95">
+                    <a href="{{ url('/member/purchase-product?service=pulsa') }}" class="flex flex-col items-center justify-center p-sm bg-white rounded-2xl border border-outline-variant/30 hover:border-primary hover:shadow-md transition-all cursor-pointer group active:scale-95">
                         <div class="w-10 h-10 rounded-full bg-primary-container/30 flex items-center justify-center mb-sm group-hover:bg-primary-container transition-colors">
                             <span class="material-symbols-outlined text-primary text-[20px]">smartphone</span>
                         </div>
-                        <span class="text-[11px] font-bold text-on-surface">Pulsa</span>
+                        <span class="text-[10px] font-bold text-on-surface text-center">Pulsa</span>
                     </a>
-                    <a href="{{ url('/member/purchase-product?service=pln') }}" class="flex flex-col items-center justify-center p-md bg-white rounded-2xl border border-outline-variant/30 hover:border-secondary hover:shadow-md transition-all cursor-pointer group active:scale-95">
-                        <div class="w-10 h-10 rounded-full bg-secondary-container/30 flex items-center justify-center mb-sm group-hover:bg-secondary-container transition-colors">
-                            <span class="material-symbols-outlined text-secondary text-[20px]">bolt</span>
-                        </div>
-                        <span class="text-[11px] font-bold text-on-surface">PLN</span>
-                    </a>
-                    <a href="{{ url('/member/purchase-product?service=data') }}" class="flex flex-col items-center justify-center p-md bg-white rounded-2xl border border-outline-variant/30 hover:border-tertiary hover:shadow-md transition-all cursor-pointer group active:scale-95">
+                    <a href="{{ url('/member/purchase-product?service=data') }}" class="flex flex-col items-center justify-center p-sm bg-white rounded-2xl border border-outline-variant/30 hover:border-tertiary hover:shadow-md transition-all cursor-pointer group active:scale-95">
                         <div class="w-10 h-10 rounded-full bg-tertiary-container/30 flex items-center justify-center mb-sm group-hover:bg-tertiary-container transition-colors">
                             <span class="material-symbols-outlined text-tertiary text-[20px]">wifi</span>
                         </div>
-                        <span class="text-[11px] font-bold text-on-surface">Data</span>
+                        <span class="text-[10px] font-bold text-on-surface text-center">Paket Data</span>
                     </a>
-                    <a href="{{ url('/member/purchase-product?service=pdam') }}" class="flex flex-col items-center justify-center p-md bg-white rounded-2xl border border-outline-variant/30 hover:border-error hover:shadow-md transition-all cursor-pointer group active:scale-95">
-                        <div class="w-10 h-10 rounded-full bg-error-container/30 flex items-center justify-center mb-sm group-hover:bg-error-container transition-colors">
-                            <span class="material-symbols-outlined text-error text-[20px]">water_drop</span>
+                    <a href="{{ url('/member/purchase-product?service=pln') }}" class="flex flex-col items-center justify-center p-sm bg-white rounded-2xl border border-outline-variant/30 hover:border-secondary hover:shadow-md transition-all cursor-pointer group active:scale-95">
+                        <div class="w-10 h-10 rounded-full bg-secondary-container/30 flex items-center justify-center mb-sm group-hover:bg-secondary-container transition-colors">
+                            <span class="material-symbols-outlined text-secondary text-[20px]">bolt</span>
                         </div>
-                        <span class="text-[11px] font-bold text-on-surface">PDAM</span>
+                        <span class="text-[10px] font-bold text-on-surface text-center">Token PLN</span>
+                    </a>
+                    <a href="{{ url('/member/purchase-product?service=game') }}" class="flex flex-col items-center justify-center p-sm bg-white rounded-2xl border border-outline-variant/30 hover:border-purple-400 hover:shadow-md transition-all cursor-pointer group active:scale-95">
+                        <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mb-sm group-hover:bg-purple-200 transition-colors">
+                            <span class="material-symbols-outlined text-purple-600 text-[20px]">sports_esports</span>
+                        </div>
+                        <span class="text-[10px] font-bold text-on-surface text-center">Voucher Game</span>
+                    </a>
+                    <a href="{{ url('/member/purchase-product?service=ewallet') }}" class="flex flex-col items-center justify-center p-sm bg-white rounded-2xl border border-outline-variant/30 hover:border-blue-400 hover:shadow-md transition-all cursor-pointer group active:scale-95">
+                        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mb-sm group-hover:bg-blue-200 transition-colors">
+                            <span class="material-symbols-outlined text-blue-600 text-[20px]">account_balance_wallet</span>
+                        </div>
+                        <span class="text-[10px] font-bold text-on-surface text-center">E-Wallet</span>
+                    </a>
+                </div>
+
+                <!-- Pascabayar Section -->
+                <div class="mb-sm flex items-center justify-between">
+                    <h3 class="font-headline-sm text-body-lg font-bold text-on-surface">Pascabayar (Tagihan)</h3>
+                </div>
+                <div class="grid grid-cols-4 gap-md mb-lg">
+                    <a href="{{ url('/member/purchase-product?service=pdam') }}" class="flex flex-col items-center justify-center p-sm bg-white rounded-2xl border border-outline-variant/30 hover:border-blue-400 hover:shadow-md transition-all cursor-pointer group active:scale-95">
+                        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mb-sm group-hover:bg-blue-200 transition-colors">
+                            <span class="material-symbols-outlined text-blue-600 text-[20px]">water_drop</span>
+                        </div>
+                        <span class="text-[10px] font-bold text-on-surface text-center">PDAM</span>
+                    </a>
+                    <a href="{{ url('/member/purchase-product?service=pln_pasca') }}" class="flex flex-col items-center justify-center p-sm bg-white rounded-2xl border border-outline-variant/30 hover:border-secondary hover:shadow-md transition-all cursor-pointer group active:scale-95">
+                        <div class="w-10 h-10 rounded-full bg-secondary-container/30 flex items-center justify-center mb-sm group-hover:bg-secondary-container transition-colors">
+                            <span class="material-symbols-outlined text-secondary text-[20px]">lightbulb</span>
+                        </div>
+                        <span class="text-[10px] font-bold text-on-surface text-center">Tagihan PLN</span>
+                    </a>
+                    <a href="{{ url('/member/purchase-product?service=bpjs') }}" class="flex flex-col items-center justify-center p-sm bg-white rounded-2xl border border-outline-variant/30 hover:border-green-400 hover:shadow-md transition-all cursor-pointer group active:scale-95">
+                        <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mb-sm group-hover:bg-green-200 transition-colors">
+                            <span class="material-symbols-outlined text-green-600 text-[20px]">health_and_safety</span>
+                        </div>
+                        <span class="text-[10px] font-bold text-on-surface text-center">BPJS</span>
+                    </a>
+                    <a href="{{ url('/member/purchase-product?service=internet') }}" class="flex flex-col items-center justify-center p-sm bg-white rounded-2xl border border-outline-variant/30 hover:border-orange-400 hover:shadow-md transition-all cursor-pointer group active:scale-95">
+                        <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center mb-sm group-hover:bg-orange-200 transition-colors">
+                            <span class="material-symbols-outlined text-orange-600 text-[20px]">router</span>
+                        </div>
+                        <span class="text-[10px] font-bold text-on-surface text-center">Internet</span>
+                    </a>
+                    <a href="{{ url('/member/purchase-product?service=hp_pasca') }}" class="flex flex-col items-center justify-center p-sm bg-white rounded-2xl border border-outline-variant/30 hover:border-gray-500 hover:shadow-md transition-all cursor-pointer group active:scale-95">
+                        <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mb-sm group-hover:bg-gray-300 transition-colors">
+                            <span class="material-symbols-outlined text-gray-700 text-[20px]">phone_android</span>
+                        </div>
+                        <span class="text-[10px] font-bold text-on-surface text-center">HP Pasca</span>
                     </a>
                 </div>
             </section>

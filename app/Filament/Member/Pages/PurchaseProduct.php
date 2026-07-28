@@ -9,6 +9,8 @@ use Filament\Forms\Contracts\HasForms;
 use Illuminate\Support\Facades\Http;
 use App\Models\Product;
 use App\Models\Transaction;
+use App\Models\Setting;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Filament\Notifications\Notification;
 
@@ -33,13 +35,35 @@ class PurchaseProduct extends Page implements HasForms
 
     public function form(Forms\Form $form): Forms\Form
     {
+        // Determine dynamic label and placeholder
+        $customerNoLabel = 'Nomor Tujuan';
+        $customerNoPlaceholder = 'Masukkan nomor';
+        if (in_array($this->service, ['pulsa', 'data', 'ewallet'])) {
+            $customerNoLabel = 'Nomor HP / Akun';
+            $customerNoPlaceholder = '081234567890';
+        } elseif ($this->service === 'pln' || $this->service === 'pln_pasca') {
+            $customerNoLabel = 'No. Meter / ID Pelanggan';
+            $customerNoPlaceholder = '123456789012';
+        } elseif ($this->service === 'game') {
+            $customerNoLabel = 'User ID';
+            $customerNoPlaceholder = '12345678';
+        } elseif (in_array($this->service, ['pdam', 'bpjs', 'internet', 'hp_pasca'])) {
+            $customerNoLabel = 'ID Pelanggan';
+            $customerNoPlaceholder = 'Masukkan ID Pelanggan';
+        }
+
         return $form
             ->schema([
                 Forms\Components\TextInput::make('customer_no')
-                    ->label('Nomor Tujuan')
+                    ->label($customerNoLabel)
                     ->required()
                     ->live(debounce: 500)
-                    ->placeholder('081234567890'),
+                    ->placeholder($customerNoPlaceholder),
+                    
+                Forms\Components\TextInput::make('zone_id')
+                    ->label('Zone ID / Server ID')
+                    ->placeholder('Misal: 1234')
+                    ->hidden(fn () => $this->service !== 'game'),
                     
                 Forms\Components\Select::make('product_id')
                     ->label('Pilih Produk')
@@ -78,8 +102,20 @@ class PurchaseProduct extends Page implements HasForms
                             $query->whereIn('category', ['Data', 'Aktivasi Perdana', 'Aktivasi Voucher', 'Voucher']);
                         } elseif ($service === 'pln') {
                             $query->whereIn('category', ['PLN']);
+                        } elseif ($service === 'game') {
+                            $query->whereIn('category', ['Games']);
+                        } elseif ($service === 'ewallet') {
+                            $query->whereIn('category', ['E-Money']); // Adjust if Digiflazz uses different term, usually E-Money or E-Wallet
                         } elseif ($service === 'pdam') {
-                            $query->whereIn('category', ['PDAM']);
+                            $query->where('category', 'Pascabayar')->where('brand', 'PDAM');
+                        } elseif ($service === 'bpjs') {
+                            $query->where('category', 'Pascabayar')->where('brand', 'BPJS KESEHATAN');
+                        } elseif ($service === 'internet') {
+                            $query->where('category', 'Pascabayar')->where('brand', 'INTERNET PASCABAYAR');
+                        } elseif ($service === 'hp_pasca') {
+                            $query->where('category', 'Pascabayar')->where('brand', 'HP PASCABAYAR');
+                        } elseif ($service === 'pln_pasca') {
+                            $query->where('category', 'Pascabayar')->where('brand', 'PLN PASCABAYAR');
                         }
                                         
                         if ($brand && in_array($service, ['pulsa', 'data'])) {
@@ -102,6 +138,13 @@ class PurchaseProduct extends Page implements HasForms
         $data = $this->form->getState();
         $user = auth()->user();
         $markup = $user->markup ?? 500;
+        
+        $customerNo = $data['customer_no'];
+        
+        // For games, concatenate zone_id if provided
+        if ($this->service === 'game' && !empty($data['zone_id'])) {
+            $customerNo .= $data['zone_id'];
+        }
 
         $product = Product::find($data['product_id']);
         if (!$product) {
@@ -124,22 +167,24 @@ class PurchaseProduct extends Page implements HasForms
 
             $refId = 'EH-' . time() . '-' . rand(1000, 9999);
 
-            // Create Transaction
+            // Save transaction
             $transaction = Transaction::create([
                 'user_id' => $user->id,
                 'ref_id' => $refId,
-                'customer_no' => $data['customer_no'],
+                'customer_no' => $customerNo,
                 'buyer_sku_code' => $product->buyer_sku_code,
-                'amount' => $finalPrice,
+                'message' => 'Pending',
                 'status' => 'Pending',
-                'message' => 'Transaksi sedang diproses',
+                'sn' => null,
+                'rc' => null,
+                'amount' => $finalPrice,
             ]);
 
             DB::commit();
 
             // Hit Digiflazz
-            $username = \App\Models\Setting::where('key', 'digiflazz_username')->value('value');
-            $apiKey = \App\Models\Setting::where('key', 'digiflazz_production_key')->value('value');
+            $username = Setting::where('key', 'digiflazz_username')->value('value');
+            $apiKey = Setting::where('key', 'digiflazz_production_key')->value('value');
             $signature = md5($username . $apiKey . $refId);
 
             $response = Http::post('https://api.digiflazz.com/v1/transaction', [
