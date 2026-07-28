@@ -36,16 +36,44 @@ class PurchaseProduct extends Page implements HasForms
                 Forms\Components\TextInput::make('customer_no')
                     ->label('Nomor Tujuan')
                     ->required()
+                    ->live(debounce: 500)
                     ->placeholder('081234567890'),
                     
                 Forms\Components\Select::make('product_id')
                     ->label('Pilih Produk')
                     ->required()
                     ->searchable()
-                    ->options(function () {
+                    ->options(function (Forms\Get $get) {
+                        $phone = $get('customer_no');
+                        $brand = null;
+                        
+                        if ($phone && strlen($phone) >= 4) {
+                            $prefix = substr($phone, 0, 4);
+                            $telkomsel = ['0811','0812','0813','0821','0822','0823','0852','0853','0851'];
+                            $indosat = ['0814','0815','0816','0855','0856','0857','0858'];
+                            $xl = ['0817','0818','0819','0859','0877','0878'];
+                            $axis = ['0838','0831','0832','0833'];
+                            $tri = ['0895','0896','0897','0898','0899'];
+                            $smartfren = ['0881','0882','0883','0884','0885','0886','0887','0888','0889'];
+                            
+                            if (in_array($prefix, $telkomsel)) $brand = 'TELKOMSEL';
+                            elseif (in_array($prefix, $indosat)) $brand = 'INDOSAT';
+                            elseif (in_array($prefix, $xl)) $brand = 'XL';
+                            elseif (in_array($prefix, $axis)) $brand = 'AXIS';
+                            elseif (in_array($prefix, $tri)) $brand = 'TRI';
+                            elseif (in_array($prefix, $smartfren)) $brand = 'SMARTFREN';
+                        }
+                        
                         $markup = auth()->user()->markup ?? 500;
-                        return Product::where('seller_product_status', true)
-                            ->get()
+                        
+                        $query = Product::where('seller_product_status', true)
+                                        ->whereIn('category', ['Pulsa', 'Data', 'Paket SMS & Telpon', 'Masa Aktif']);
+                                        
+                        if ($brand) {
+                            $query->where('brand', $brand);
+                        }
+                        
+                        return $query->get()
                             ->mapWithKeys(function ($p) use ($markup) {
                                 $finalPrice = $p->price + $markup;
                                 return [$p->id => "{$p->product_name} - Rp " . number_format($finalPrice, 0, ',', '.')];
