@@ -20,7 +20,15 @@ class PurchaseProduct extends Page implements HasForms
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
     protected static ?string $navigationLabel = 'Transaksi Produk';
-    protected static ?string $title = 'Pembelian Produk';
+    
+    public function getTitle(): string | \Illuminate\Contracts\Support\Htmlable
+    {
+        $filter = request()->query('filter');
+        if ($filter) {
+            return 'Transaksi ' . title_case(strtolower($filter));
+        }
+        return 'Pembelian Produk';
+    }
     
     // Hide from sidebar to force users to use Dashboard icons
     protected static bool $shouldRegisterNavigation = false;
@@ -28,20 +36,22 @@ class PurchaseProduct extends Page implements HasForms
     protected static string $view = 'filament.member.pages.purchase-product';
 
     public ?array $data = [];
-    public ?string $service = 'pulsa'; // Default to pulsa
+    public ?string $type = 'prepaid';
+    public ?string $filter = 'Pulsa';
     
     public ?array $inquiryData = null;
     public ?string $inquiryRefId = null;
 
     public function mount(): void
     {
-        $this->service = request()->query('service', 'pulsa');
+        $this->type = request()->query('type', 'prepaid');
+        $this->filter = request()->query('filter', 'Pulsa');
         $this->form->fill();
     }
 
     public function isPostpaid(): bool
     {
-        return in_array($this->service, ['pdam', 'bpjs', 'internet', 'hp_pasca', 'pln_pasca']);
+        return $this->type === 'postpaid';
     }
 
     public function cancelInquiry(): void
@@ -74,31 +84,13 @@ class PurchaseProduct extends Page implements HasForms
         
         $query = Product::where('seller_product_status', true);
         
-        // Map the requested service to Digiflazz categories
-        $service = $this->service;
-        if ($service === 'pulsa') {
-            $query->whereIn('category', ['Pulsa', 'Paket SMS & Telpon', 'Masa Aktif']);
-        } elseif ($service === 'data') {
-            $query->whereIn('category', ['Data', 'Aktivasi Perdana', 'Aktivasi Voucher', 'Voucher']);
-        } elseif ($service === 'pln') {
-            $query->whereIn('category', ['PLN']);
-        } elseif ($service === 'game') {
-            $query->whereIn('category', ['Games']);
-        } elseif ($service === 'ewallet') {
-            $query->whereIn('category', ['E-Money']); 
-        } elseif ($service === 'pdam') {
-            $query->where('category', 'Pascabayar')->where('brand', 'PDAM');
-        } elseif ($service === 'bpjs') {
-            $query->where('category', 'Pascabayar')->where('brand', 'BPJS KESEHATAN');
-        } elseif ($service === 'internet') {
-            $query->where('category', 'Pascabayar')->where('brand', 'INTERNET PASCABAYAR');
-        } elseif ($service === 'hp_pasca') {
-            $query->where('category', 'Pascabayar')->where('brand', 'HP PASCABAYAR');
-        } elseif ($service === 'pln_pasca') {
-            $query->where('category', 'Pascabayar')->where('brand', 'PLN PASCABAYAR');
+        if ($this->isPostpaid()) {
+            $query->where('category', 'Pascabayar')->where('brand', $this->filter);
+        } else {
+            $query->where('category', $this->filter);
         }
                         
-        if ($brand && in_array($service, ['pulsa', 'data'])) {
+        if ($brand && in_array(strtolower($this->filter), ['pulsa', 'data'])) {
             $query->where('brand', $brand);
         }
         
@@ -107,21 +99,29 @@ class PurchaseProduct extends Page implements HasForms
 
     public function form(Forms\Form $form): Forms\Form
     {
-        // Determine dynamic label and placeholder
         $customerNoLabel = 'Nomor Tujuan';
         $customerNoPlaceholder = 'Masukkan nomor';
-        if (in_array($this->service, ['pulsa', 'data', 'ewallet'])) {
-            $customerNoLabel = 'Nomor HP / Akun';
-            $customerNoPlaceholder = '081234567890';
-        } elseif ($this->service === 'pln' || $this->service === 'pln_pasca') {
-            $customerNoLabel = 'No. Meter / ID Pelanggan';
-            $customerNoPlaceholder = '123456789012';
-        } elseif ($this->service === 'game') {
-            $customerNoLabel = 'User ID';
-            $customerNoPlaceholder = '12345678';
-        } elseif (in_array($this->service, ['pdam', 'bpjs', 'internet', 'hp_pasca'])) {
+        
+        $filterLower = strtolower($this->filter);
+
+        if ($this->isPostpaid()) {
             $customerNoLabel = 'ID Pelanggan';
             $customerNoPlaceholder = 'Masukkan ID Pelanggan';
+            if (str_contains($filterLower, 'pln')) {
+                $customerNoLabel = 'No. Meter / ID Pelanggan';
+                $customerNoPlaceholder = '123456789012';
+            }
+        } else {
+            if (str_contains($filterLower, 'pulsa') || str_contains($filterLower, 'data') || str_contains($filterLower, 'e-money') || str_contains($filterLower, 'ewallet')) {
+                $customerNoLabel = 'Nomor HP / Akun';
+                $customerNoPlaceholder = '081234567890';
+            } elseif (str_contains($filterLower, 'pln')) {
+                $customerNoLabel = 'No. Meter / ID Pelanggan';
+                $customerNoPlaceholder = '123456789012';
+            } elseif (str_contains($filterLower, 'game')) {
+                $customerNoLabel = 'User ID';
+                $customerNoPlaceholder = '12345678';
+            }
         }
 
         return $form
@@ -135,7 +135,7 @@ class PurchaseProduct extends Page implements HasForms
                 Forms\Components\TextInput::make('zone_id')
                     ->label('Zone ID / Server ID')
                     ->placeholder('Misal: 1234')
-                    ->hidden(fn () => $this->service !== 'game'),
+                    ->hidden(fn () => !str_contains(strtolower($this->filter), 'game')),
                     
                 Forms\Components\ViewField::make('product_id')
                     ->label('Pilih Produk')
@@ -154,7 +154,7 @@ class PurchaseProduct extends Page implements HasForms
         $markup = $user->markup ?? 500;
         
         $customerNo = $data['customer_no'];
-        if ($this->service === 'game' && !empty($data['zone_id'])) {
+        if (str_contains(strtolower($this->filter), 'game') && !empty($data['zone_id'])) {
             $customerNo .= $data['zone_id'];
         }
 

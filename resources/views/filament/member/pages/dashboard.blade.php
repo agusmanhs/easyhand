@@ -162,41 +162,54 @@
                     </div>
                 </div>
 
+                @php
+                    $excludePrepaid = ['Aktivasi Perdana', 'Aktivasi Voucher', 'Masa Aktif', 'Paket SMS & Telpon'];
+                    $prepaidCategories = \App\Models\Product::where('category', '!=', 'Pascabayar')
+                        ->whereNotIn('category', $excludePrepaid)
+                        ->select('category')
+                        ->distinct()
+                        ->pluck('category');
+
+                    $postpaidBrands = \App\Models\Product::where('category', 'Pascabayar')
+                        ->select('brand')
+                        ->distinct()
+                        ->pluck('brand');
+
+                    $getIconInfo = function($name) {
+                        $nameLower = strtolower($name);
+                        
+                        if (str_contains($nameLower, 'pulsa')) return ['icon' => 'smartphone', 'color' => 'primary', 'bg' => 'primary-container/30'];
+                        if (str_contains($nameLower, 'data')) return ['icon' => 'wifi', 'color' => 'tertiary', 'bg' => 'tertiary-container/30'];
+                        if (str_contains($nameLower, 'pln')) return ['icon' => 'bolt', 'color' => 'secondary', 'bg' => 'secondary-container/30'];
+                        if (str_contains($nameLower, 'game')) return ['icon' => 'sports_esports', 'color' => 'purple-600', 'bg' => 'purple-100'];
+                        if (str_contains($nameLower, 'e-money') || str_contains($nameLower, 'ewallet')) return ['icon' => 'account_balance_wallet', 'color' => 'blue-600', 'bg' => 'blue-100'];
+                        if (str_contains($nameLower, 'gas')) return ['icon' => 'local_fire_department', 'color' => 'orange-600', 'bg' => 'orange-100'];
+                        if (str_contains($nameLower, 'streaming') || str_contains($nameLower, 'tv')) return ['icon' => 'live_tv', 'color' => 'red-600', 'bg' => 'red-100'];
+                        if (str_contains($nameLower, 'voucher')) return ['icon' => 'confirmation_number', 'color' => 'yellow-600', 'bg' => 'yellow-100'];
+                        
+                        if (str_contains($nameLower, 'pdam')) return ['icon' => 'water_drop', 'color' => 'blue-600', 'bg' => 'blue-100'];
+                        if (str_contains($nameLower, 'bpjs')) return ['icon' => 'health_and_safety', 'color' => 'green-600', 'bg' => 'green-100'];
+                        if (str_contains($nameLower, 'internet') || str_contains($nameLower, 'wifi')) return ['icon' => 'router', 'color' => 'orange-600', 'bg' => 'orange-100'];
+                        if (str_contains($nameLower, 'hp') || str_contains($nameLower, 'pasca')) return ['icon' => 'phone_android', 'color' => 'gray-700', 'bg' => 'gray-200'];
+
+                        return ['icon' => 'storefront', 'color' => 'brand-orange', 'bg' => 'orange-50'];
+                    };
+                @endphp
+
                 <!-- Prabayar Section -->
                 <div class="mb-sm flex items-center justify-between">
                     <h3 class="font-headline-sm text-body-lg font-bold text-on-surface">Prabayar (Isi Ulang)</h3>
                 </div>
                 <div class="grid grid-cols-4 gap-md mb-lg">
-                    <a href="{{ url('/member/purchase-product?service=pulsa') }}" class="flex flex-col items-center justify-center p-sm bg-white rounded-2xl border border-outline-variant/30 hover:border-primary hover:shadow-md transition-all cursor-pointer group active:scale-95">
-                        <div class="w-10 h-10 rounded-full bg-primary-container/30 flex items-center justify-center mb-sm group-hover:bg-primary-container transition-colors">
-                            <span class="material-symbols-outlined text-primary text-[20px]">smartphone</span>
-                        </div>
-                        <span class="text-[10px] font-bold text-on-surface text-center">Pulsa</span>
-                    </a>
-                    <a href="{{ url('/member/purchase-product?service=data') }}" class="flex flex-col items-center justify-center p-sm bg-white rounded-2xl border border-outline-variant/30 hover:border-tertiary hover:shadow-md transition-all cursor-pointer group active:scale-95">
-                        <div class="w-10 h-10 rounded-full bg-tertiary-container/30 flex items-center justify-center mb-sm group-hover:bg-tertiary-container transition-colors">
-                            <span class="material-symbols-outlined text-tertiary text-[20px]">wifi</span>
-                        </div>
-                        <span class="text-[10px] font-bold text-on-surface text-center">Paket Data</span>
-                    </a>
-                    <a href="{{ url('/member/purchase-product?service=pln') }}" class="flex flex-col items-center justify-center p-sm bg-white rounded-2xl border border-outline-variant/30 hover:border-secondary hover:shadow-md transition-all cursor-pointer group active:scale-95">
-                        <div class="w-10 h-10 rounded-full bg-secondary-container/30 flex items-center justify-center mb-sm group-hover:bg-secondary-container transition-colors">
-                            <span class="material-symbols-outlined text-secondary text-[20px]">bolt</span>
-                        </div>
-                        <span class="text-[10px] font-bold text-on-surface text-center">Token PLN</span>
-                    </a>
-                    <a href="{{ url('/member/purchase-product?service=game') }}" class="flex flex-col items-center justify-center p-sm bg-white rounded-2xl border border-outline-variant/30 hover:border-purple-400 hover:shadow-md transition-all cursor-pointer group active:scale-95">
-                        <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mb-sm group-hover:bg-purple-200 transition-colors">
-                            <span class="material-symbols-outlined text-purple-600 text-[20px]">sports_esports</span>
-                        </div>
-                        <span class="text-[10px] font-bold text-on-surface text-center">Voucher Game</span>
-                    </a>
-                    <a href="{{ url('/member/purchase-product?service=ewallet') }}" class="flex flex-col items-center justify-center p-sm bg-white rounded-2xl border border-outline-variant/30 hover:border-blue-400 hover:shadow-md transition-all cursor-pointer group active:scale-95">
-                        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mb-sm group-hover:bg-blue-200 transition-colors">
-                            <span class="material-symbols-outlined text-blue-600 text-[20px]">account_balance_wallet</span>
-                        </div>
-                        <span class="text-[10px] font-bold text-on-surface text-center">E-Wallet</span>
-                    </a>
+                    @foreach($prepaidCategories as $category)
+                        @php $style = $getIconInfo($category); @endphp
+                        <a href="{{ url('/member/purchase-product?type=prepaid&filter=' . urlencode($category)) }}" class="flex flex-col items-center justify-center p-sm bg-white rounded-2xl border border-outline-variant/30 hover:border-{{ explode('-', $style['color'])[0] }}-400 hover:shadow-md transition-all cursor-pointer group active:scale-95 text-center">
+                            <div class="w-10 h-10 rounded-full bg-{{ $style['bg'] }} flex items-center justify-center mb-sm group-hover:brightness-95 transition-colors">
+                                <span class="material-symbols-outlined text-{{ $style['color'] }} text-[20px]">{{ $style['icon'] }}</span>
+                            </div>
+                            <span class="text-[10px] font-bold text-on-surface line-clamp-2 leading-tight">{{ $category }}</span>
+                        </a>
+                    @endforeach
                 </div>
 
                 <!-- Pascabayar Section -->
@@ -204,36 +217,15 @@
                     <h3 class="font-headline-sm text-body-lg font-bold text-on-surface">Pascabayar (Tagihan)</h3>
                 </div>
                 <div class="grid grid-cols-4 gap-md mb-lg">
-                    <a href="{{ url('/member/purchase-product?service=pdam') }}" class="flex flex-col items-center justify-center p-sm bg-white rounded-2xl border border-outline-variant/30 hover:border-blue-400 hover:shadow-md transition-all cursor-pointer group active:scale-95">
-                        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mb-sm group-hover:bg-blue-200 transition-colors">
-                            <span class="material-symbols-outlined text-blue-600 text-[20px]">water_drop</span>
-                        </div>
-                        <span class="text-[10px] font-bold text-on-surface text-center">PDAM</span>
-                    </a>
-                    <a href="{{ url('/member/purchase-product?service=pln_pasca') }}" class="flex flex-col items-center justify-center p-sm bg-white rounded-2xl border border-outline-variant/30 hover:border-secondary hover:shadow-md transition-all cursor-pointer group active:scale-95">
-                        <div class="w-10 h-10 rounded-full bg-secondary-container/30 flex items-center justify-center mb-sm group-hover:bg-secondary-container transition-colors">
-                            <span class="material-symbols-outlined text-secondary text-[20px]">lightbulb</span>
-                        </div>
-                        <span class="text-[10px] font-bold text-on-surface text-center">Tagihan PLN</span>
-                    </a>
-                    <a href="{{ url('/member/purchase-product?service=bpjs') }}" class="flex flex-col items-center justify-center p-sm bg-white rounded-2xl border border-outline-variant/30 hover:border-green-400 hover:shadow-md transition-all cursor-pointer group active:scale-95">
-                        <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mb-sm group-hover:bg-green-200 transition-colors">
-                            <span class="material-symbols-outlined text-green-600 text-[20px]">health_and_safety</span>
-                        </div>
-                        <span class="text-[10px] font-bold text-on-surface text-center">BPJS</span>
-                    </a>
-                    <a href="{{ url('/member/purchase-product?service=internet') }}" class="flex flex-col items-center justify-center p-sm bg-white rounded-2xl border border-outline-variant/30 hover:border-orange-400 hover:shadow-md transition-all cursor-pointer group active:scale-95">
-                        <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center mb-sm group-hover:bg-orange-200 transition-colors">
-                            <span class="material-symbols-outlined text-orange-600 text-[20px]">router</span>
-                        </div>
-                        <span class="text-[10px] font-bold text-on-surface text-center">Internet</span>
-                    </a>
-                    <a href="{{ url('/member/purchase-product?service=hp_pasca') }}" class="flex flex-col items-center justify-center p-sm bg-white rounded-2xl border border-outline-variant/30 hover:border-gray-500 hover:shadow-md transition-all cursor-pointer group active:scale-95">
-                        <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mb-sm group-hover:bg-gray-300 transition-colors">
-                            <span class="material-symbols-outlined text-gray-700 text-[20px]">phone_android</span>
-                        </div>
-                        <span class="text-[10px] font-bold text-on-surface text-center">HP Pasca</span>
-                    </a>
+                    @foreach($postpaidBrands as $brand)
+                        @php $style = $getIconInfo($brand); @endphp
+                        <a href="{{ url('/member/purchase-product?type=postpaid&filter=' . urlencode($brand)) }}" class="flex flex-col items-center justify-center p-sm bg-white rounded-2xl border border-outline-variant/30 hover:border-{{ explode('-', $style['color'])[0] }}-400 hover:shadow-md transition-all cursor-pointer group active:scale-95 text-center">
+                            <div class="w-10 h-10 rounded-full bg-{{ $style['bg'] }} flex items-center justify-center mb-sm group-hover:brightness-95 transition-colors">
+                                <span class="material-symbols-outlined text-{{ $style['color'] }} text-[20px]">{{ $style['icon'] }}</span>
+                            </div>
+                            <span class="text-[10px] font-bold text-on-surface line-clamp-2 leading-tight">{{ title_case(strtolower($brand)) }}</span>
+                        </a>
+                    @endforeach
                 </div>
             </section>
 
