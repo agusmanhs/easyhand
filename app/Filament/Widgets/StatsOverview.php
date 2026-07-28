@@ -75,7 +75,7 @@ class StatsOverview extends BaseWidget
                 ->color('primary')
                 ->chart([3, 12, 4, 10, 2, 15, 17])
                 ->icon('heroicon-o-document-text'),
-            Stat::make('TOTAL REVENUE', '$1.24M')
+            Stat::make('TOTAL REVENUE', 'Rp 1.24M')
                 ->description('-2.1%')
                 ->descriptionIcon('heroicon-m-arrow-trending-down')
                 ->color('danger')

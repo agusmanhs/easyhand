@@ -37,7 +37,7 @@ class ProductResource extends Resource
                 Forms\Components\TextInput::make('price')
                     ->required()
                     ->numeric()
-                    ->prefix('$'),
+                    ->prefix('Rp'),
                 Forms\Components\Toggle::make('buyer_product_status')
                     ->required(),
                 Forms\Components\Toggle::make('seller_product_status')
@@ -74,7 +74,7 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('seller_name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('price')
-                    ->money()
+                    ->formatStateUsing(fn ($state) => 'Rp ' . number_format($state, 0, ',', '.'))
                     ->sortable(),
                 Tables\Columns\IconColumn::make('buyer_product_status')
                     ->boolean(),
