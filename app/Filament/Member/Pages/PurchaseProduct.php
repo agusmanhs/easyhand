@@ -98,7 +98,7 @@ class PurchaseProduct extends Page implements HasForms
 
             // Hit Digiflazz
             $username = \App\Models\Setting::where('key', 'digiflazz_username')->value('value');
-            $apiKey = \App\Models\Setting::where('key', 'digiflazz_api_key')->value('value');
+            $apiKey = \App\Models\Setting::where('key', 'digiflazz_production_key')->value('value');
             $signature = md5($username . $apiKey . $refId);
 
             $response = Http::post('https://api.digiflazz.com/v1/transaction', [

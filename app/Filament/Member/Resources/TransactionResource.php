@@ -60,7 +60,7 @@ class TransactionResource extends Resource
                     ->visible(fn (Transaction $record) => $record->status === 'Pending')
                     ->action(function (Transaction $record) {
                         $username = \App\Models\Setting::where('key', 'digiflazz_username')->value('value');
-                        $apiKey = \App\Models\Setting::where('key', 'digiflazz_api_key')->value('value');
+                        $apiKey = \App\Models\Setting::where('key', 'digiflazz_production_key')->value('value');
                         $signature = md5($username . $apiKey . $record->ref_id);
 
                         $response = Http::post('https://api.digiflazz.com/v1/transaction', [
