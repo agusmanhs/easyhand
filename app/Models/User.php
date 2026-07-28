@@ -55,9 +55,10 @@ class User extends Authenticatable implements FilamentUser
     protected static function booted(): void
     {
         static::saving(function (User $user) {
-            // Re-calculate hash using email and current saldo
-            // We use email instead of id because id might be null on creation
-            $user->saldo_hash = hash_hmac('sha256', $user->email . $user->saldo, config('app.key'));
+            // Re-calculate hash using email and current raw saldo attribute
+            // We use getAttributes()['saldo'] to bypass the accessor which might return 0 if hash doesn't match yet
+            $rawSaldo = $user->getAttributes()['saldo'] ?? 0;
+            $user->saldo_hash = hash_hmac('sha256', $user->email . $rawSaldo, config('app.key'));
         });
     }
 
