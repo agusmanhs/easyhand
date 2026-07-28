@@ -26,11 +26,25 @@ class PurchaseProduct extends Page implements HasForms
 
     public ?array $data = [];
     public ?string $service = 'pulsa'; // Default to pulsa
+    
+    public ?array $inquiryData = null;
+    public ?string $inquiryRefId = null;
 
     public function mount(): void
     {
         $this->service = request()->query('service', 'pulsa');
         $this->form->fill();
+    }
+
+    public function isPostpaid(): bool
+    {
+        return in_array($this->service, ['pdam', 'bpjs', 'internet', 'hp_pasca', 'pln_pasca']);
+    }
+
+    public function cancelInquiry(): void
+    {
+        $this->inquiryData = null;
+        $this->inquiryRefId = null;
     }
 
     public function form(Forms\Form $form): Forms\Form
@@ -140,8 +154,6 @@ class PurchaseProduct extends Page implements HasForms
         $markup = $user->markup ?? 500;
         
         $customerNo = $data['customer_no'];
-        
-        // For games, concatenate zone_id if provided
         if ($this->service === 'game' && !empty($data['zone_id'])) {
             $customerNo .= $data['zone_id'];
         }
@@ -152,6 +164,17 @@ class PurchaseProduct extends Page implements HasForms
             return;
         }
 
+        if ($this->isPostpaid()) {
+            if (!$this->inquiryData) {
+                $this->doInquiry($product, $customerNo);
+                return;
+            } else {
+                $this->doPayPostpaid($product, $customerNo, $markup);
+                return;
+            }
+        }
+
+        // --- PREPAID FLOW ---
         $finalPrice = $product->price + $markup;
 
         if ($user->saldo < $finalPrice) {
@@ -182,7 +205,7 @@ class PurchaseProduct extends Page implements HasForms
 
             DB::commit();
 
-            // Hit Digiflazz
+            // Hit Digiflazz for Prepaid
             $username = Setting::where('key', 'digiflazz_username')->value('value');
             $apiKey = Setting::where('key', 'digiflazz_production_key')->value('value');
             $signature = md5($username . $apiKey . $refId);
@@ -190,7 +213,34 @@ class PurchaseProduct extends Page implements HasForms
             $response = Http::post('https://api.digiflazz.com/v1/transaction', [
                 'username' => $username,
                 'buyer_sku_code' => $product->buyer_sku_code,
-                'customer_no' => $data['customer_no'],
+                'customer_no' => $customerNo,
+                'ref_id' => $refId,
+                'sign' => $signature,
+            ]);
+
+            $this->handleDigiflazzResponse($response, $transaction, $user, $finalPrice);
+
+            return redirect()->to('/member');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Notification::make()->title('Terjadi kesalahan sistem: ' . $e->getMessage())->danger()->send();
+        }
+    }
+
+    private function doInquiry($product, $customerNo)
+    {
+        $refId = 'INQ-' . time() . '-' . rand(1000, 9999);
+        $username = Setting::where('key', 'digiflazz_username')->value('value');
+        $apiKey = Setting::where('key', 'digiflazz_production_key')->value('value');
+        $signature = md5($username . $apiKey . $refId);
+
+        try {
+            $response = Http::post('https://api.digiflazz.com/v1/transaction', [
+                'commands' => 'inq-pasca',
+                'username' => $username,
+                'buyer_sku_code' => $product->buyer_sku_code,
+                'customer_no' => $customerNo,
                 'ref_id' => $refId,
                 'sign' => $signature,
             ]);
@@ -198,32 +248,105 @@ class PurchaseProduct extends Page implements HasForms
             $result = $response->json();
 
             if (isset($result['data'])) {
-                $status = $result['data']['status']; // Sukses, Gagal, Pending
-                $message = $result['data']['message'];
-                
-                $transaction->update([
-                    'status' => $status,
-                    'message' => $message,
-                    'sn' => $result['data']['sn'] ?? null,
-                ]);
-
-                if ($status === 'Gagal') {
-                    // Refund
-                    $user->saldo += $finalPrice;
-                    $user->save();
-                    Notification::make()->title('Transaksi Gagal: ' . $message)->warning()->send();
-                } else {
-                    Notification::make()->title('Transaksi Berhasil Dibuat')->success()->send();
+                if ($result['data']['status'] === 'Gagal') {
+                    Notification::make()->title('Gagal Cek Tagihan')->body($result['data']['message'] ?? 'Tagihan tidak ditemukan')->danger()->send();
+                    return;
                 }
+                $this->inquiryData = $result['data'];
+                $this->inquiryRefId = $refId;
+                Notification::make()->title('Tagihan Ditemukan')->success()->send();
             } else {
-                Notification::make()->title('Gagal terhubung ke Digiflazz')->danger()->send();
+                Notification::make()->title('Gagal terhubung ke server tagihan')->danger()->send();
             }
+        } catch (\Exception $e) {
+            Notification::make()->title('Kesalahan koneksi: ' . $e->getMessage())->danger()->send();
+        }
+    }
+
+    private function doPayPostpaid($product, $customerNo, $markup)
+    {
+        $user = auth()->user();
+        $finalPrice = ($this->inquiryData['selling_price'] ?? 0) + $markup;
+
+        if ($user->saldo < $finalPrice) {
+            Notification::make()->title('Saldo tidak mencukupi')->danger()->send();
+            return;
+        }
+
+        DB::beginTransaction();
+        try {
+            // Deduct balance
+            $user->saldo -= $finalPrice;
+            $user->save();
+
+            $refId = 'PAY-' . time() . '-' . rand(1000, 9999);
+
+            // Save transaction
+            $transaction = Transaction::create([
+                'user_id' => $user->id,
+                'ref_id' => $refId,
+                'customer_no' => $customerNo,
+                'buyer_sku_code' => $product->buyer_sku_code,
+                'message' => 'Pending',
+                'status' => 'Pending',
+                'sn' => null,
+                'rc' => null,
+                'amount' => $finalPrice,
+            ]);
+
+            DB::commit();
+
+            $username = Setting::where('key', 'digiflazz_username')->value('value');
+            $apiKey = Setting::where('key', 'digiflazz_production_key')->value('value');
+            $signature = md5($username . $apiKey . $refId);
+
+            $response = Http::post('https://api.digiflazz.com/v1/transaction', [
+                'commands' => 'pay-pasca',
+                'username' => $username,
+                'buyer_sku_code' => $product->buyer_sku_code,
+                'customer_no' => $customerNo,
+                'ref_id' => $refId,
+                'sign' => $signature,
+            ]);
+
+            $this->handleDigiflazzResponse($response, $transaction, $user, $finalPrice);
+            
+            // Reset inquiry state
+            $this->inquiryData = null;
+            $this->inquiryRefId = null;
 
             return redirect()->to('/member');
 
         } catch (\Exception $e) {
             DB::rollBack();
-            Notification::make()->title('Terjadi kesalahan sistem: ' . $e->getMessage())->danger()->send();
+            Notification::make()->title('Terjadi kesalahan: ' . $e->getMessage())->danger()->send();
+        }
+    }
+
+    private function handleDigiflazzResponse($response, $transaction, $user, $finalPrice)
+    {
+        $result = $response->json();
+
+        if (isset($result['data'])) {
+            $status = $result['data']['status']; // Sukses, Gagal, Pending
+            $message = $result['data']['message'];
+            
+            $transaction->update([
+                'status' => $status,
+                'message' => $message,
+                'sn' => $result['data']['sn'] ?? null,
+            ]);
+
+            if ($status === 'Gagal') {
+                // Refund
+                $user->saldo += $finalPrice;
+                $user->save();
+                Notification::make()->title('Transaksi Gagal: ' . $message)->warning()->send();
+            } else {
+                Notification::make()->title('Transaksi Berhasil Dibuat')->success()->send();
+            }
+        } else {
+            Notification::make()->title('Gagal terhubung ke Digiflazz')->danger()->send();
         }
     }
 }
