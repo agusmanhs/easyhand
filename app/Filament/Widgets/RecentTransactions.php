@@ -45,8 +45,8 @@ class RecentTransactions extends BaseWidget
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'Pending' => 'warning',
-                        'Success' => 'success',
-                        'Failed' => 'danger',
+                        'Sukses' => 'success',
+                        'Gagal' => 'danger',
                         default => 'gray',
                     }),
                 TextColumn::make('created_at')

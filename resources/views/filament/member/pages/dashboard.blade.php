@@ -198,64 +198,40 @@
                         <h3 class="font-headline-md text-headline-md">Recent History</h3>
                         <a class="text-primary font-button-text text-button-text hover:underline" href="#">See All</a>
                     </div>
-                    <div class="space-y-lg overflow-y-auto custom-scrollbar pr-xs">
-                        <!-- Item 1 -->
+                    @php
+                        $recentHistory = \App\Models\Transaction::where('user_id', auth()->id())->latest()->take(4)->get();
+                    @endphp
+                    <div class="space-y-sm">
+                        @forelse($recentHistory as $trx)
                         <div class="flex items-center gap-md">
                             <div class="w-12 h-12 rounded-xl bg-surface-container-low flex items-center justify-center flex-shrink-0">
-                                <span class="material-symbols-outlined text-primary">smartphone</span>
+                                @if(str_contains(strtolower($trx->buyer_sku_code), 'pln'))
+                                    <span class="material-symbols-outlined text-secondary">bolt</span>
+                                @elseif(str_contains(strtolower($trx->buyer_sku_code), 'data'))
+                                    <span class="material-symbols-outlined text-tertiary">wifi</span>
+                                @else
+                                    <span class="material-symbols-outlined text-primary">smartphone</span>
+                                @endif
                             </div>
                             <div class="flex-1 overflow-hidden">
-                                <p class="font-semibold text-body-sm truncate">Pulsa Indosat - 0812...</p>
-                                <p class="text-[12px] text-on-surface-variant">24 Oct 2023 • 14:20</p>
+                                <p class="font-semibold text-body-sm truncate">{{ $trx->buyer_sku_code }} - {{ $trx->customer_no }}</p>
+                                <p class="text-[12px] text-on-surface-variant">{{ $trx->created_at->format('d M Y • H:i') }}</p>
                             </div>
                             <div class="text-right">
-                                <p class="font-bold text-body-sm text-on-surface">-Rp 50.000</p>
-                                <span class="inline-flex px-xs py-[2px] bg-green-100 text-green-800 rounded-md text-[10px] font-bold uppercase tracking-wider">Success</span>
+                                <p class="font-bold text-body-sm text-on-surface">-Rp {{ number_format($trx->amount, 0, ',', '.') }}</p>
+                                @if($trx->status === 'Sukses')
+                                    <span class="inline-flex px-xs py-[2px] bg-green-100 text-green-800 rounded-md text-[10px] font-bold uppercase tracking-wider">Sukses</span>
+                                @elseif($trx->status === 'Pending')
+                                    <span class="inline-flex px-xs py-[2px] bg-yellow-100 text-yellow-800 rounded-md text-[10px] font-bold uppercase tracking-wider">Pending</span>
+                                @else
+                                    <span class="inline-flex px-xs py-[2px] bg-red-100 text-red-800 rounded-md text-[10px] font-bold uppercase tracking-wider">Gagal</span>
+                                @endif
                             </div>
                         </div>
-                        <!-- Item 2 -->
-                        <div class="flex items-center gap-md">
-                            <div class="w-12 h-12 rounded-xl bg-surface-container-low flex items-center justify-center flex-shrink-0">
-                                <span class="material-symbols-outlined text-secondary">bolt</span>
-                            </div>
-                            <div class="flex-1 overflow-hidden">
-                                <p class="font-semibold text-body-sm truncate">Token PLN - Alex House</p>
-                                <p class="text-[12px] text-on-surface-variant">23 Oct 2023 • 09:15</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="font-bold text-body-sm text-on-surface">-Rp 200.000</p>
-                                <span class="inline-flex px-xs py-[2px] bg-green-100 text-green-800 rounded-md text-[10px] font-bold uppercase tracking-wider">Success</span>
-                            </div>
-                        </div>
-                        <!-- Item 3 -->
-                        <div class="flex items-center gap-md">
-                            <div class="w-12 h-12 rounded-xl bg-surface-container-low flex items-center justify-center flex-shrink-0">
-                                <span class="material-symbols-outlined text-primary-container">account_balance_wallet</span>
-                            </div>
-                            <div class="flex-1 overflow-hidden">
-                                <p class="font-semibold text-body-sm truncate">Top Up - BCA Transfer</p>
-                                <p class="text-[12px] text-on-surface-variant">22 Oct 2023 • 18:45</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="font-bold text-body-sm text-green-600">+Rp 500.000</p>
-                                <span class="inline-flex px-xs py-[2px] bg-green-100 text-green-800 rounded-md text-[10px] font-bold uppercase tracking-wider">Success</span>
-                            </div>
-                        </div>
-                        <!-- Item 4 -->
-                        <div class="flex items-center gap-md">
-                            <div class="w-12 h-12 rounded-xl bg-surface-container-low flex items-center justify-center flex-shrink-0">
-                                <span class="material-symbols-outlined text-error">receipt</span>
-                            </div>
-                            <div class="flex-1 overflow-hidden">
-                                <p class="font-semibold text-body-sm truncate">Internet Bill - MyRep</p>
-                                <p class="text-[12px] text-on-surface-variant">21 Oct 2023 • 10:00</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="font-bold text-body-sm text-on-surface">-Rp 349.000</p>
-                                <span class="inline-flex px-xs py-[2px] bg-yellow-100 text-yellow-800 rounded-md text-[10px] font-bold uppercase tracking-wider">Pending</span>
-                            </div>
-                        </div>
-                    </div>
+                        @empty
+                        <div class="text-center py-md text-on-surface-variant text-body-sm">Belum ada transaksi.</div>
+                        @endforelse
+                    </div>  
                 </div>
 
                 <!-- Promotion Banner Section -->
