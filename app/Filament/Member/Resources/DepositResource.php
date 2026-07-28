@@ -12,6 +12,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Infolists;
+use Filament\Infolists\Infolist;
 
 class DepositResource extends Resource
 {
@@ -49,6 +51,52 @@ class DepositResource extends Resource
                     ->columnSpanFull(),
             ]);
     }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Infolists\Components\Section::make('Instruksi Pembayaran')
+                    ->description('Silakan transfer TEPAT sesuai nominal hingga 3 digit terakhir agar sistem dapat memproses otomatis.')
+                    ->schema([
+                        Infolists\Components\TextEntry::make('paymentMethod.name')
+                            ->label('Bank / E-Wallet'),
+                        Infolists\Components\TextEntry::make('paymentMethod.account_number')
+                            ->label('Nomor Rekening Tujuan')
+                            ->copyable()
+                            ->weight('bold')
+                            ->color('primary'),
+                        Infolists\Components\TextEntry::make('paymentMethod.account_name')
+                            ->label('Atas Nama'),
+                        Infolists\Components\TextEntry::make('total_transfer')
+                            ->label('Nominal Harus Ditransfer')
+                            ->formatStateUsing(fn ($state) => 'Rp ' . number_format($state, 0, ',', '.'))
+                            ->copyable()
+                            ->weight('bold')
+                            ->color('danger')
+                            ->size(Infolists\Components\TextEntry\TextEntrySize::Large),
+                        Infolists\Components\TextEntry::make('paymentMethod.instructions')
+                            ->label('Petunjuk Khusus')
+                            ->markdown()
+                            ->columnSpanFull(),
+                    ])->columns(2),
+                    
+                Infolists\Components\Section::make('Status Deposit')
+                    ->schema([
+                        Infolists\Components\TextEntry::make('status')
+                            ->badge()
+                            ->color(fn (string $state): string => match ($state) {
+                                'pending' => 'warning',
+                                'approved' => 'success',
+                                'rejected' => 'danger',
+                            }),
+                        Infolists\Components\TextEntry::make('created_at')
+                            ->label('Waktu Request')
+                            ->dateTime(),
+                    ])->columns(2),
+            ]);
+    }
+
 
     public static function table(Table $table): Table
     {
