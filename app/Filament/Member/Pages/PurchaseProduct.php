@@ -41,6 +41,8 @@ class PurchaseProduct extends Page implements HasForms
     
     public ?array $inquiryData = null;
     public ?string $inquiryRefId = null;
+    public ?string $errorMessage = null;
+    public ?string $errorTitle = null;
 
     public function mount(): void
     {
@@ -58,6 +60,8 @@ class PurchaseProduct extends Page implements HasForms
     {
         $this->inquiryData = null;
         $this->inquiryRefId = null;
+        $this->errorMessage = null;
+        $this->errorTitle = null;
     }
 
     public function getAvailableProductsProperty()
@@ -149,6 +153,9 @@ class PurchaseProduct extends Page implements HasForms
 
     public function submit()
     {
+        $this->errorMessage = null;
+        $this->errorTitle = null;
+        
         $data = $this->form->getState();
         $user = auth()->user();
         $markup = $user->markup ?? 500;
@@ -249,7 +256,9 @@ class PurchaseProduct extends Page implements HasForms
 
             if (isset($result['data'])) {
                 if ($result['data']['status'] === 'Gagal') {
-                    Notification::make()->title('Gagal Cek Tagihan')->body($result['data']['message'] ?? 'Tagihan tidak ditemukan')->danger()->send();
+                    $this->errorTitle = 'Gagal Cek Tagihan';
+                    $this->errorMessage = $result['data']['message'] ?? 'Tagihan tidak ditemukan atau sudah dibayar.';
+                    Notification::make()->title('Gagal Cek Tagihan')->body($this->errorMessage)->danger()->send();
                     return;
                 }
                 $this->inquiryData = $result['data'];

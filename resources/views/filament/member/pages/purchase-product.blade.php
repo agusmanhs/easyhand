@@ -49,7 +49,17 @@
             <form wire:submit="submit">
                 {{ $this->form }}
 
-                <div class="mt-8">
+                @if($this->errorMessage)
+                    <div class="mt-6 bg-danger-500/10 border border-danger-500/20 rounded-xl p-4 flex items-start gap-3 transition-all duration-300">
+                        <span class="material-symbols-outlined text-danger-600 mt-0.5" style="font-size: 20px;">info</span>
+                        <div>
+                            <h4 class="text-danger-600 font-bold text-sm">{{ $this->errorTitle ?? 'Pemberitahuan' }}</h4>
+                            <p class="text-danger-600/90 text-sm mt-1 leading-tight">{{ $this->errorMessage }}</p>
+                        </div>
+                    </div>
+                @endif
+
+                <div class="mt-6">
                     <x-filament::button type="submit" size="lg" class="w-full sm:w-auto">
                         {{ $this->isPostpaid() ? 'Cek Tagihan' : 'Beli Sekarang' }}
                     </x-filament::button>
