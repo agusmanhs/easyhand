@@ -273,13 +273,15 @@
                 </div>
 
                 <!-- Promotion Banner Section -->
-                <div class="bg-primary-container p-lg rounded-[24px] text-white relative overflow-hidden group cursor-pointer shadow-lg active:scale-95 transition-transform">
+                <div class="bg-primary-600 p-6 sm:p-8 rounded-[24px] text-white relative overflow-hidden group cursor-pointer shadow-lg active:scale-95 transition-transform">
                     <div class="absolute inset-0 bg-cover bg-center mix-blend-overlay opacity-30 group-hover:scale-110 transition-transform duration-700" style="background-image: url('{{ asset('images/promo_banner.png') }}')"></div>
-                    <div class="relative z-10">
-                        <span class="inline-block px-sm py-xs bg-white/20 rounded-lg text-[10px] font-bold uppercase tracking-widest mb-sm">Exclusive Offer</span>
-                        <h4 class="font-headline-md text-headline-md leading-tight mb-xs">Get 10% Cashback</h4>
-                        <p class="text-body-sm opacity-90">On all utility bill payments this weekend. T&amp;C apply.</p>
-                        <button class="mt-md px-md py-sm bg-white text-primary font-bold rounded-lg text-body-sm hover:shadow-xl transition-all">Claim Now</button>
+                    <div class="relative z-10 flex flex-col h-full justify-between">
+                        <div>
+                            <span class="inline-block px-3 py-1 bg-white/20 rounded-lg text-[10px] font-bold uppercase tracking-widest mb-3">Exclusive Offer</span>
+                            <h4 class="text-2xl font-bold leading-tight mb-2">Get 10% Cashback</h4>
+                            <p class="text-sm opacity-90 mb-6">On all utility bill payments this weekend. T&amp;C apply.</p>
+                        </div>
+                        <button class="px-5 py-2.5 bg-white text-primary-600 font-bold rounded-lg text-sm hover:shadow-xl transition-all w-fit">Claim Now</button>
                     </div>
                 </div>
             </aside>
