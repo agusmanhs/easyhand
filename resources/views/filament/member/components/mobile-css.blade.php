@@ -9,10 +9,5 @@
         .fi-sidebar-collapse-btn {
             display: none !important;
         }
-        
-        /* Add padding to the main content area so it's not hidden behind the bottom nav */
-        .fi-main {
-            padding-bottom: 5rem !important; /* 80px space for bottom nav */
-        }
     }
 </style>

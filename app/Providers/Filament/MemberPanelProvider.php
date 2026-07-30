@@ -63,6 +63,14 @@ class MemberPanelProvider extends PanelProvider
             ->renderHook(
                 \Filament\View\PanelsRenderHook::BODY_END,
                 fn (): string => \Illuminate\Support\Facades\View::make('filament.member.components.bottom-nav')->render()
+            )
+            ->renderHook(
+                \Filament\View\PanelsRenderHook::TOPBAR_START,
+                fn (): string => '<div class="md:hidden flex items-center ms-4">' . \Illuminate\Support\Facades\View::make('filament.logo')->render() . '</div>'
+            )
+            ->renderHook(
+                \Filament\View\PanelsRenderHook::CONTENT_END,
+                fn (): string => '<div class="h-28 w-full md:hidden"></div>'
             );
     }
 }
