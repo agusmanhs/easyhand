@@ -144,27 +144,17 @@
                     <span class="font-headline-md text-[24px] font-bold text-primary">EasyHand</span>
                 </div>
                 
+                <!-- Back to Home -->
+                <div class="mb-lg">
+                    <a href="{{ url('/') }}" class="inline-flex items-center text-sm font-medium text-on-surface-variant hover:text-primary transition-colors">
+                        <span class="material-symbols-outlined text-[18px] mr-1">arrow_back</span>
+                        Back to Website
+                    </a>
+                </div>
+
                 <div class="text-left mb-xl">
                     <h2 class="font-headline-md text-[24px] font-semibold text-on-surface mb-xs">Welcome back</h2>
                     <p class="font-body-sm text-[14px] text-on-surface-variant">Enter your credentials to access your account</p>
-                </div>
-                
-                <!-- Social Logins -->
-                <div class="grid grid-cols-2 gap-md mb-xl">
-                    <button class="flex items-center justify-center gap-sm py-sm px-md border border-outline-variant rounded-xl font-button-text text-[15px] font-semibold hover:bg-surface-container-low transition-all active:scale-95 duration-100 text-[#141b2b]">
-                        <img alt="Google" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIUKZDEcM6TeeuYmEFhb0O0tJT7BiBzzChNpy5gKxWui1MfHr3tBvDtMTrwm-Vi1N1GLugdzzZBXDJ0eWfEoQNWr9N8GNjAOv-3ZH8ktQIMNTAR4HG1f_UuKNKGuZej7Tuqh0-OASAPiBNtJNKKXuVxqNwDibD3F0xgN-1bV142i91m66q5p054mkFmNFJlS6lilA2X6OHfZkkyh7oerwdUB2TbDJ9w1PQn4b4HNJcG7okliAoXB7-Q2vIuLcN4kL-wfIW2xEae7o"/>
-                        <span>Google</span>
-                    </button>
-                    <button class="flex items-center justify-center gap-sm py-sm px-md border border-outline-variant rounded-xl font-button-text text-[15px] font-semibold hover:bg-surface-container-low transition-all active:scale-95 duration-100 text-[#141b2b]">
-                        <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">file_download</span>
-                        <span>Apple</span>
-                    </button>
-                </div>
-                
-                <div class="relative flex items-center mb-xl">
-                    <div class="flex-grow border-t border-outline-variant"></div>
-                    <span class="flex-shrink mx-md font-label-caps text-[12px] font-medium tracking-[0.05em] text-[#554336]">OR EMAIL</span>
-                    <div class="flex-grow border-t border-outline-variant"></div>
                 </div>
 
                 <!-- Filament Form -->
