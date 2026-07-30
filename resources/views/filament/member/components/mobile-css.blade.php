@@ -9,5 +9,14 @@
         .fi-sidebar-collapse-btn {
             display: none !important;
         }
+
+        /* Prevent content from being hidden behind bottom nav using a physical spacer */
+        .fi-main::after {
+            content: "";
+            display: block;
+            height: 100px;
+            width: 100%;
+            flex-shrink: 0;
+        }
     }
 </style>
