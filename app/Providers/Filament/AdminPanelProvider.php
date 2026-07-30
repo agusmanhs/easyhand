@@ -29,6 +29,8 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login(\App\Filament\Pages\Auth\Login::class)
             ->brandName('EasyHand')
+            ->brandLogo(fn () => view('filament.logo'))
+            ->favicon(asset('images/easyhand-logo.svg'))
             ->colors([
                 'primary' => Color::Amber,
             ])
