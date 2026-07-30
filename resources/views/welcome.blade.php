@@ -27,10 +27,10 @@
         </div>
         <div class="flex items-center gap-4 text-sm font-medium">
             @auth
-                <a href="{{ url('/admin') }}" class="text-brand hover:text-brand-dark transition">Dashboard</a>
+                <a href="{{ url('/member') }}" class="text-brand hover:text-brand-dark transition">Dashboard</a>
             @else
-                <a href="{{ route('filament.admin.auth.login') }}" class="text-brand hover:text-brand-dark transition">Login</a>
-                <a href="{{ route('filament.admin.auth.login') }}" class="bg-brand text-white px-5 py-2 rounded-md hover:bg-brand-dark transition shadow-sm">Register</a>
+                <a href="{{ route('filament.member.auth.login') }}" class="text-brand hover:text-brand-dark transition">Login</a>
+                <a href="{{ route('filament.member.auth.register') }}" class="bg-brand text-white px-5 py-2 rounded-md hover:bg-brand-dark transition shadow-sm">Register</a>
             @endauth
         </div>
     </nav>
@@ -238,7 +238,7 @@
             <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
             <h2 class="text-3xl md:text-5xl font-serif-custom font-bold text-white mb-6 relative z-10">Ready to transform your payments?</h2>
             <p class="text-gray-300 text-lg mb-10 max-w-2xl mx-auto relative z-10">Join thousands of users who have simplified their digital financial life with EasyHand.</p>
-            <a href="{{ route('filament.admin.auth.login') }}" class="inline-block bg-brand text-white font-medium px-8 py-3 rounded-md hover-bg-brand transition shadow-lg relative z-10">Create Free Account</a>
+            <a href="{{ route('filament.member.auth.register') }}" class="inline-block bg-brand text-white font-medium px-8 py-3 rounded-md hover-bg-brand transition shadow-lg relative z-10">Create Free Account</a>
         </div>
     </section>
 
