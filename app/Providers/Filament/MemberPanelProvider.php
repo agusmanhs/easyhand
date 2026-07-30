@@ -30,6 +30,9 @@ class MemberPanelProvider extends PanelProvider
             ->colors([
                 'primary' => '#b1773a',
             ])
+            ->brandLogo(asset('images/easyhand-logo.png'))
+            ->brandLogoHeight('2.5rem')
+            ->favicon(asset('images/easyhand-logo.png'))
             ->discoverResources(in: app_path('Filament/Member/Resources'), for: 'App\\Filament\\Member\\Resources')
             ->discoverPages(in: app_path('Filament/Member/Pages'), for: 'App\\Filament\\Member\\Pages')
             ->pages([
