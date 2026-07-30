@@ -273,13 +273,13 @@
                 </div>
 
                 <!-- Promotion Banner Section -->
-                <div class="bg-primary-600 p-6 rounded-[24px] text-white relative overflow-hidden group cursor-pointer shadow-lg active:scale-95 transition-transform w-full">
+                <div class="text-white relative overflow-hidden group cursor-pointer shadow-lg active:scale-95 transition-transform w-full" style="background-color: #ea580c; border-radius: 24px; padding: 24px; margin-bottom: 24px;">
                     <div class="absolute inset-0 bg-cover bg-center mix-blend-overlay opacity-30 group-hover:scale-110 transition-transform duration-700" style="background-image: url('{{ asset('images/promo_banner.png') }}')"></div>
-                    <div class="relative z-10 block">
-                        <span class="inline-block px-3 py-1 bg-white/20 rounded-lg text-[10px] font-bold uppercase tracking-widest mb-3">Exclusive Offer</span>
-                        <h4 class="text-2xl font-bold leading-tight mb-2">Get 10% Cashback</h4>
-                        <p class="text-sm opacity-90 mb-5">On all utility bill payments this weekend. T&amp;C apply.</p>
-                        <button class="px-5 py-2.5 bg-white text-primary-600 font-bold rounded-lg text-sm hover:shadow-xl transition-all">Claim Now</button>
+                    <div class="relative z-10" style="display: block;">
+                        <span style="display: inline-block; padding: 4px 12px; background: rgba(255,255,255,0.2); border-radius: 8px; font-size: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px;">Exclusive Offer</span>
+                        <h4 style="font-size: 24px; font-weight: bold; line-height: 1.2; margin-bottom: 8px;">Get 10% Cashback</h4>
+                        <p style="font-size: 14px; opacity: 0.9; margin-bottom: 20px;">On all utility bill payments this weekend. T&amp;C apply.</p>
+                        <button style="padding: 10px 20px; background: white; color: #ea580c; font-weight: bold; border-radius: 8px; font-size: 14px; border: none; cursor: pointer;">Claim Now</button>
                     </div>
                 </div>
             </aside>
