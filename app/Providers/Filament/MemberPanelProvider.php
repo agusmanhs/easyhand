@@ -26,7 +26,7 @@ class MemberPanelProvider extends PanelProvider
             ->id('member')
             ->path('member')
             ->login(\App\Filament\Pages\Auth\Login::class)
-            ->registration()
+            ->registration(\App\Filament\Pages\Auth\Register::class)
             ->brandName('EasyHand')
             ->colors([
                 'primary' => '#b1773a',
