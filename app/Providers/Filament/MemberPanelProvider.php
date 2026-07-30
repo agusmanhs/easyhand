@@ -53,6 +53,14 @@ class MemberPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->renderHook(
+                \Filament\View\PanelsRenderHook::HEAD_END,
+                fn (): string => \Illuminate\Support\Facades\View::make('filament.member.components.mobile-css')->render()
+            )
+            ->renderHook(
+                \Filament\View\PanelsRenderHook::BODY_END,
+                fn (): string => \Illuminate\Support\Facades\View::make('filament.member.components.bottom-nav')->render()
+            );
     }
 }
