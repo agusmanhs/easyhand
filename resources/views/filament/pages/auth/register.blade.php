@@ -153,13 +153,13 @@
                 </div>
 
                 <div class="text-left mb-xl">
-                    <h2 class="font-headline-md text-[24px] font-semibold text-on-surface mb-xs">Welcome back</h2>
-                    <p class="font-body-sm text-[14px] text-on-surface-variant">Enter your credentials to access your account</p>
+                    <h2 class="font-headline-md text-[24px] font-semibold text-on-surface mb-xs">Create an account</h2>
+                    <p class="font-body-sm text-[14px] text-on-surface-variant">Join us today and simplify your digital finance.</p>
                 </div>
 
                 <!-- Filament Form -->
                 <div class="[&>form>div>div>div:first-child>div>div]:text-sm [&>form>div>div>div:first-child>div>div]:font-semibold [&>form>div>div>div:first-child>div>div]:text-on-surface">
-                    <x-filament-panels::form wire:submit="authenticate">
+                    <x-filament-panels::form wire:submit="register">
                         {{ $this->form }}
 
                         <x-filament-panels::form.actions
@@ -171,8 +171,8 @@
                 </div>
                 
                 <p class="mt-xxl text-center font-body-sm text-[14px] text-on-surface-variant text-[#554336]">
-                    Don't have an account? 
-                    <a class="text-primary font-bold hover:underline text-[#8d4b00]" href="{{ route('filament.member.auth.register') }}">Register for an account</a>
+                    Already have an account? 
+                    <a class="text-primary font-bold hover:underline text-[#8d4b00]" href="{{ route('filament.member.auth.login') }}">Login here</a>
                 </p>
                 
                 <!-- Footer Links (Mobile Only) -->

@@ -8,6 +8,9 @@ use Spatie\Permission\Models\Role;
 
 class Register extends BaseRegister
 {
+    protected static string $view = 'filament.pages.auth.register';
+    protected static string $layout = 'filament-panels::components.layout.base';
+
     protected function handleRegistration(array $data): Model
     {
         $user = parent::handleRegistration($data);
