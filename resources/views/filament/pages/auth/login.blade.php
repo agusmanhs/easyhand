@@ -108,9 +108,7 @@
             
             <!-- Content on Branding Side -->
             <div class="relative z-10 max-w-lg text-inverse-on-surface">
-                <div class="mb-lg">
-                    <span class="font-headline-md text-[24px] font-bold text-primary-fixed-dim">EasyHand</span>
-                </div>
+                <!-- Removed redundant text logo -->
                 <h1 class="font-display-lg text-[48px] leading-[56px] tracking-[-0.02em] font-bold mb-md">Seamless payments, global velocity.</h1>
                 <p class="font-body-lg text-[18px] text-surface-variant opacity-90 mb-xxl">
                     Join thousands of businesses managing their finances with the speed and precision of modern SaaS architecture.
@@ -139,9 +137,9 @@
         <!-- Right Side: Login Form -->
         <section class="w-full md:w-1/2 lg:w-2/5 flex items-center justify-center bg-surface px-gutter py-xxl">
             <div class="w-full max-w-md">
-                <!-- Mobile Logo -->
-                <div class="md:hidden mb-xxl flex justify-center">
-                    <span class="font-headline-md text-[24px] font-bold text-primary">EasyHand</span>
+                <!-- Brand Logo -->
+                <div class="mb-xxl flex justify-start">
+                    <img src="{{ asset('images/easyhand-full-logo.png') }}" alt="easyhand" class="h-14 w-auto object-contain">
                 </div>
                 
                 <!-- Back to Home -->

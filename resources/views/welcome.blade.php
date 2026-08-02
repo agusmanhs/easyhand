@@ -11,13 +11,16 @@
     <style>
         .font-serif-custom { font-family: 'Playfair Display', serif; }
     </style>
+    <link rel="icon" type="image/png" href="{{ asset('images/easyhand-favicon.png') }}">
 </head>
 <body class="antialiased bg-[#fafafa] text-[#1e293b]">
 
     <!-- Navbar -->
     <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-4 flex justify-between items-center">
         <div class="flex items-center gap-8">
-            <a href="/" class="text-2xl font-serif-custom font-bold text-brand">EasyHand</a>
+            <a href="/" class="flex items-center">
+                <img src="{{ asset('images/easyhand-full-logo.png') }}" alt="easyhand" class="h-8 w-auto object-contain">
+            </a>
             <div class="hidden md:flex gap-6 text-sm font-medium text-gray-600">
                 <a href="#" class="text-brand border-b-2 border-brand pb-1">Services</a>
                 <a href="#" class="hover:text-brand transition">Pricing</a>
@@ -247,7 +250,9 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row justify-between mb-12">
                 <div class="max-w-xs mb-8 md:mb-0">
-                    <a href="/" class="text-2xl font-serif-custom font-bold text-brand block mb-4">EasyHand</a>
+                    <a href="/" class="block mb-4">
+                        <img src="{{ asset('images/easyhand-full-logo.png') }}" alt="easyhand" class="h-10 w-auto object-contain">
+                    </a>
                     <p class="text-sm text-gray-500">The future of digital fintech. Secure, fast, and incredibly simple.</p>
                 </div>
                 <div class="flex gap-16 text-sm">

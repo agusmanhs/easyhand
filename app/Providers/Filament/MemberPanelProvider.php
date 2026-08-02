@@ -32,7 +32,7 @@ class MemberPanelProvider extends PanelProvider
                 'primary' => '#b1773a',
             ])
             ->brandLogo(fn () => view('filament.logo'))
-            ->favicon(asset('images/easyhand-logo.svg'))
+            ->favicon(asset('images/easyhand-favicon.png'))
             ->discoverResources(in: app_path('Filament/Member/Resources'), for: 'App\\Filament\\Member\\Resources')
             ->discoverPages(in: app_path('Filament/Member/Pages'), for: 'App\\Filament\\Member\\Pages')
             ->pages([
