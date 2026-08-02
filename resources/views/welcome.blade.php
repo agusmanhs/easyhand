@@ -3,7 +3,44 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>EasyHand - All Your Digital Payments in One Place</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>EasyHand - Aplikasi Pembayaran Digital & PPOB Terlengkap</title>
+    <meta name="title" content="EasyHand - Aplikasi Pembayaran Digital & PPOB Terlengkap">
+    <meta name="description" content="EasyHand adalah solusi fintech modern untuk transaksi cepat dan aman. Beli pulsa, token PLN, bayar tagihan PDAM, BPJS, dan e-Wallet dalam satu aplikasi.">
+    <meta name="keywords" content="Aplikasi PPOB, Pembayaran Digital, Beli Pulsa Murah, Token PLN, Dompet Digital, Fintech Indonesia, EasyHand">
+    <meta name="author" content="EasyHand Fintech">
+
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://easyhand.my.id/">
+    <meta property="og:title" content="EasyHand - Aplikasi Pembayaran Digital & PPOB Terlengkap">
+    <meta property="og:description" content="Solusi fintech modern untuk transaksi cepat dan aman. Beli pulsa, bayar tagihan, dan e-Wallet dalam satu sentuhan.">
+    <meta property="og:image" content="{{ asset('images/easyhand-full-logo.png') }}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://easyhand.my.id/">
+    <meta property="twitter:title" content="EasyHand - Aplikasi Pembayaran Digital & PPOB Terlengkap">
+    <meta property="twitter:description" content="Solusi fintech modern untuk transaksi cepat dan aman. Beli pulsa, bayar tagihan, dan e-Wallet dalam satu sentuhan.">
+    <meta property="twitter:image" content="{{ asset('images/easyhand-full-logo.png') }}">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "EasyHand",
+      "operatingSystem": "Web",
+      "applicationCategory": "FinanceApplication",
+      "description": "EasyHand adalah solusi fintech modern untuk transaksi cepat dan aman PPOB dan tagihan.",
+      "url": "https://easyhand.my.id/",
+      "publisher": {
+        "@type": "Organization",
+        "name": "EasyHand Fintech"
+      }
+    }
+    </script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

@@ -1,2 +1,6 @@
 User-agent: *
-Disallow:
+Disallow: /admin
+Disallow: /member
+Disallow: /filament
+
+Sitemap: https://easyhand.my.id/sitemap.xml
