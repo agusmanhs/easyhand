@@ -203,7 +203,7 @@
                 <div class="grid grid-cols-4 gap-md mb-lg">
                     @foreach($prepaidCategories as $category)
                         @php $style = $getIconInfo($category); @endphp
-                        <a href="{{ url('/member/purchase-product?type=prepaid&filter=' . urlencode($category)) }}" class="flex flex-col items-center justify-center p-sm bg-white rounded-2xl border border-outline-variant/30 hover:border-{{ explode('-', $style['color'])[0] }}-400 hover:shadow-md transition-all cursor-pointer group active:scale-95 text-center">
+                        <a href="{{ url('/member/purchase-product?type=prepaid&filter=' . urlencode($category)) }}" class="flex flex-col items-center justify-center p-sm bg-white dark:bg-gray-900 rounded-2xl border border-outline-variant/30 dark:border-white/10 hover:border-{{ explode('-', $style['color'])[0] }}-400 hover:shadow-md transition-all cursor-pointer group active:scale-95 text-center">
                             <div class="w-10 h-10 rounded-full bg-{{ $style['bg'] }} flex items-center justify-center mb-sm group-hover:brightness-95 transition-colors">
                                 <span class="material-symbols-outlined text-{{ $style['color'] }} text-[20px]">{{ $style['icon'] }}</span>
                             </div>
@@ -219,7 +219,7 @@
                 <div class="grid grid-cols-4 gap-md mb-lg">
                     @foreach($postpaidBrands as $brand)
                         @php $style = $getIconInfo($brand); @endphp
-                        <a href="{{ url('/member/purchase-product?type=postpaid&filter=' . urlencode($brand)) }}" class="flex flex-col items-center justify-center p-sm bg-white rounded-2xl border border-outline-variant/30 hover:border-{{ explode('-', $style['color'])[0] }}-400 hover:shadow-md transition-all cursor-pointer group active:scale-95 text-center">
+                        <a href="{{ url('/member/purchase-product?type=postpaid&filter=' . urlencode($brand)) }}" class="flex flex-col items-center justify-center p-sm bg-white dark:bg-gray-900 rounded-2xl border border-outline-variant/30 dark:border-white/10 hover:border-{{ explode('-', $style['color'])[0] }}-400 hover:shadow-md transition-all cursor-pointer group active:scale-95 text-center">
                             <div class="w-10 h-10 rounded-full bg-{{ $style['bg'] }} flex items-center justify-center mb-sm group-hover:brightness-95 transition-colors">
                                 <span class="material-symbols-outlined text-{{ $style['color'] }} text-[20px]">{{ $style['icon'] }}</span>
                             </div>
@@ -231,7 +231,7 @@
 
             <!-- Recent Transactions (Sidebar Layout on Desktop) -->
             <aside class="lg:col-span-4 flex flex-col gap-lg">
-                <div class="bg-white p-lg rounded-[24px] border border-outline-variant/30 shadow-sm flex flex-col h-full max-h-[500px]">
+                <div class="bg-white dark:bg-gray-900 p-lg rounded-[24px] border border-outline-variant/30 dark:border-white/10 shadow-sm flex flex-col h-full max-h-[500px]">
                     <div class="flex justify-between items-center mb-lg">
                         <h3 class="font-headline-md text-headline-md">Recent History</h3>
                         <a class="text-primary font-button-text text-button-text hover:underline" href="#">See All</a>
@@ -291,7 +291,7 @@
                 <h3 class="font-headline-md text-headline-md">Finance Insights</h3>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
-                <div class="bg-white rounded-[24px] border border-outline-variant/30 overflow-hidden shadow-sm hover:shadow-md transition-all">
+                <div class="bg-white dark:bg-gray-900 rounded-[24px] border border-outline-variant/30 dark:border-white/10 overflow-hidden shadow-sm hover:shadow-md transition-all">
                     <div class="h-40 bg-cover bg-center" style="background-image: url('{{ asset('images/market_news.png') }}')"></div>
                     <div class="p-md">
                         <span class="text-[10px] font-bold text-primary uppercase">Market News</span>
@@ -299,7 +299,7 @@
                         <p class="text-body-sm text-on-surface-variant line-clamp-2">Learn how the experts automate their payments and save more every month with EasyHand.</p>
                     </div>
                 </div>
-                <div class="bg-white rounded-[24px] border border-outline-variant/30 overflow-hidden shadow-sm hover:shadow-md transition-all">
+                <div class="bg-white dark:bg-gray-900 rounded-[24px] border border-outline-variant/30 dark:border-white/10 overflow-hidden shadow-sm hover:shadow-md transition-all">
                     <div class="h-40 bg-cover bg-center" style="background-image: url('{{ asset('images/new_feature.png') }}')"></div>
                     <div class="p-md">
                         <span class="text-[10px] font-bold text-secondary uppercase">New Feature</span>
@@ -307,7 +307,7 @@
                         <p class="text-body-sm text-on-surface-variant line-clamp-2">Moving money has never been easier. Link your primary bank account and transfer in seconds.</p>
                     </div>
                 </div>
-                <div class="bg-white rounded-[24px] border border-outline-variant/30 overflow-hidden shadow-sm hover:shadow-md transition-all">
+                <div class="bg-white dark:bg-gray-900 rounded-[24px] border border-outline-variant/30 dark:border-white/10 overflow-hidden shadow-sm hover:shadow-md transition-all">
                     <div class="h-40 bg-cover bg-center" style="background-image: url('{{ asset('images/savings.png') }}')"></div>
                     <div class="p-md">
                         <span class="text-[10px] font-bold text-tertiary uppercase">Savings</span>
