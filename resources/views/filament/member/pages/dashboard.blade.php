@@ -29,6 +29,9 @@
         .fi-main {
             background-color: #f9f9ff !important;
         }
+        html.dark .fi-main {
+            background-color: #09090b !important; /* Zinc 950 */
+        }
     </style>
     <script>
         tailwind.config = {
