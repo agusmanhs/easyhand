@@ -129,11 +129,11 @@
     </script>
 
     <!-- Stitch Dashboard Canvas -->
-    <div class="stitch-container text-on-surface font-body-md w-full max-w-screen-2xl mx-auto pb-20">
+    <div class="stitch-container text-on-surface dark:text-gray-100 font-body-md w-full max-w-screen-2xl mx-auto pb-20">
         
         <div class="mb-lg">
-            <h1 class="font-headline-md text-headline-md font-bold text-on-surface">Welcome back, {{ auth()->user()->name }}!</h1>
-            <p class="text-body-sm text-on-surface-variant">Manage your finances with speed and precision.</p>
+            <h1 class="font-headline-md text-headline-md font-bold text-on-surface dark:text-gray-100">Welcome back, {{ auth()->user()->name }}!</h1>
+            <p class="text-body-sm text-gray-500 dark:text-gray-400">Manage your finances with speed and precision.</p>
         </div>
 
         <!-- Dashboard Bento Grid -->
@@ -198,7 +198,7 @@
 
                 <!-- Prabayar Section -->
                 <div class="mb-sm flex items-center justify-between">
-                    <h3 class="font-headline-sm text-body-lg font-bold text-on-surface">Prabayar (Isi Ulang)</h3>
+                    <h3 class="font-headline-sm text-body-lg font-bold text-on-surface dark:text-gray-100">Prabayar (Isi Ulang)</h3>
                 </div>
                 <div class="grid grid-cols-4 gap-md mb-lg">
                     @foreach($prepaidCategories as $category)
@@ -207,14 +207,14 @@
                             <div class="w-10 h-10 rounded-full bg-{{ $style['bg'] }} flex items-center justify-center mb-sm group-hover:brightness-95 transition-colors">
                                 <span class="material-symbols-outlined text-{{ $style['color'] }} text-[20px]">{{ $style['icon'] }}</span>
                             </div>
-                            <span class="text-[10px] font-bold text-on-surface line-clamp-2 leading-tight">{{ $category }}</span>
+                            <span class="text-[10px] font-bold text-on-surface dark:text-gray-100 line-clamp-2 leading-tight">{{ $category }}</span>
                         </a>
                     @endforeach
                 </div>
 
                 <!-- Pascabayar Section -->
                 <div class="mb-sm flex items-center justify-between">
-                    <h3 class="font-headline-sm text-body-lg font-bold text-on-surface">Pascabayar (Tagihan)</h3>
+                    <h3 class="font-headline-sm text-body-lg font-bold text-on-surface dark:text-gray-100">Pascabayar (Tagihan)</h3>
                 </div>
                 <div class="grid grid-cols-4 gap-md mb-lg">
                     @foreach($postpaidBrands as $brand)
@@ -223,7 +223,7 @@
                             <div class="w-10 h-10 rounded-full bg-{{ $style['bg'] }} flex items-center justify-center mb-sm group-hover:brightness-95 transition-colors">
                                 <span class="material-symbols-outlined text-{{ $style['color'] }} text-[20px]">{{ $style['icon'] }}</span>
                             </div>
-                            <span class="text-[10px] font-bold text-on-surface line-clamp-2 leading-tight">{{ ucwords(strtolower($brand)) }}</span>
+                            <span class="text-[10px] font-bold text-on-surface dark:text-gray-100 line-clamp-2 leading-tight">{{ ucwords(strtolower($brand)) }}</span>
                         </a>
                     @endforeach
                 </div>
@@ -253,10 +253,10 @@
                             </div>
                             <div class="flex-1 overflow-hidden">
                                 <p class="font-semibold text-body-sm truncate">{{ $trx->buyer_sku_code }} - {{ $trx->customer_no }}</p>
-                                <p class="text-[12px] text-on-surface-variant">{{ $trx->created_at->format('d M Y • H:i') }}</p>
+                                <p class="text-[12px] text-gray-500 dark:text-gray-400">{{ $trx->created_at->format('d M Y • H:i') }}</p>
                             </div>
                             <div class="text-right">
-                                <p class="font-bold text-body-sm text-on-surface">-Rp {{ number_format($trx->amount, 0, ',', '.') }}</p>
+                                <p class="font-bold text-body-sm text-on-surface dark:text-gray-100">-Rp {{ number_format($trx->amount, 0, ',', '.') }}</p>
                                 @if($trx->status === 'Sukses')
                                     <span class="inline-flex px-xs py-[2px] bg-green-100 text-green-800 rounded-md text-[10px] font-bold uppercase tracking-wider">Sukses</span>
                                 @elseif($trx->status === 'Pending')
@@ -267,7 +267,7 @@
                             </div>
                         </div>
                         @empty
-                        <div class="text-center py-md text-on-surface-variant text-body-sm">Belum ada transaksi.</div>
+                        <div class="text-center py-md text-gray-500 dark:text-gray-400 text-body-sm">Belum ada transaksi.</div>
                         @endforelse
                     </div>  
                 </div>
@@ -296,7 +296,7 @@
                     <div class="p-md">
                         <span class="text-[10px] font-bold text-primary uppercase">Market News</span>
                         <h5 class="font-bold text-body-md mt-xs mb-sm">5 Tips to Manage Your Monthly Bills Effectively</h5>
-                        <p class="text-body-sm text-on-surface-variant line-clamp-2">Learn how the experts automate their payments and save more every month with EasyHand.</p>
+                        <p class="text-body-sm text-gray-500 dark:text-gray-400 line-clamp-2">Learn how the experts automate their payments and save more every month with EasyHand.</p>
                     </div>
                 </div>
                 <div class="bg-white dark:bg-gray-900 rounded-[24px] border border-outline-variant/30 dark:border-white/10 overflow-hidden shadow-sm hover:shadow-md transition-all">
@@ -304,7 +304,7 @@
                     <div class="p-md">
                         <span class="text-[10px] font-bold text-secondary uppercase">New Feature</span>
                         <h5 class="font-bold text-body-md mt-xs mb-sm">Introducing Direct Wallet-to-Bank Transfer</h5>
-                        <p class="text-body-sm text-on-surface-variant line-clamp-2">Moving money has never been easier. Link your primary bank account and transfer in seconds.</p>
+                        <p class="text-body-sm text-gray-500 dark:text-gray-400 line-clamp-2">Moving money has never been easier. Link your primary bank account and transfer in seconds.</p>
                     </div>
                 </div>
                 <div class="bg-white dark:bg-gray-900 rounded-[24px] border border-outline-variant/30 dark:border-white/10 overflow-hidden shadow-sm hover:shadow-md transition-all">
@@ -312,7 +312,7 @@
                     <div class="p-md">
                         <span class="text-[10px] font-bold text-tertiary uppercase">Savings</span>
                         <h5 class="font-bold text-body-md mt-xs mb-sm">Save Up to 15% with EasyHand Prime</h5>
-                        <p class="text-body-sm text-on-surface-variant line-clamp-2">Upgrade your account to Prime and enjoy reduced admin fees on all transaction types.</p>
+                        <p class="text-body-sm text-gray-500 dark:text-gray-400 line-clamp-2">Upgrade your account to Prime and enjoy reduced admin fees on all transaction types.</p>
                     </div>
                 </div>
             </div>
