@@ -12,13 +12,13 @@
                 <div 
                     @click="state = '{{ $product->id }}'"
                     :class="{ 
-                        'border-primary-600 bg-primary-50 ring-2 ring-primary-600 shadow-md': state == '{{ $product->id }}', 
-                        'border-gray-200 bg-white hover:border-primary-300 hover:shadow-sm': state != '{{ $product->id }}' 
+                        'border-primary-600 bg-primary-50 dark:bg-primary-900/30 ring-2 ring-primary-600 shadow-md': state == '{{ $product->id }}', 
+                        'border-gray-200 dark:border-white/10 bg-white dark:bg-gray-900 hover:border-primary-300 dark:hover:border-primary-500 hover:shadow-sm': state != '{{ $product->id }}' 
                     }"
                     class="cursor-pointer border rounded-2xl p-4 transition-all duration-200 relative overflow-hidden flex flex-col justify-between min-h-[100px]"
                 >
                     <div class="flex justify-between items-start gap-2">
-                        <div class="font-semibold text-sm text-gray-800 line-clamp-2 leading-tight">
+                        <div class="font-semibold text-sm text-gray-800 dark:text-gray-100 line-clamp-2 leading-tight">
                             {{ $product->product_name }}
                         </div>
                         
@@ -31,7 +31,7 @@
                     </div>
                     
                     @if(!$this->isPostpaid())
-                        <div class="mt-3 font-bold text-primary-600 text-sm">
+                        <div class="mt-3 font-bold text-primary-600 dark:text-primary-400 text-sm">
                             Rp {{ number_format($finalPrice, 0, ',', '.') }}
                         </div>
                     @else
@@ -43,12 +43,12 @@
             @endforeach
             
             @if($this->availableProducts->isEmpty())
-                <div class="col-span-full py-10 text-center text-gray-500 bg-gray-50 rounded-2xl border border-dashed border-gray-300">
+                <div class="col-span-full py-10 text-center text-gray-500 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-dashed border-gray-300 dark:border-gray-600">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto text-gray-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
-                    <p class="font-medium text-sm">Masukkan nomor/ID pelanggan yang valid</p>
-                    <p class="text-xs mt-1">Produk akan otomatis muncul di sini</p>
+                    <p class="font-medium text-sm dark:text-gray-300">Masukkan nomor/ID pelanggan yang valid</p>
+                    <p class="text-xs mt-1 dark:text-gray-400">Produk akan otomatis muncul di sini</p>
                 </div>
             @endif
         </div>
