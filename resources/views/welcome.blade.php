@@ -28,15 +28,15 @@
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
     {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
+      "@@context": "https://schema.org",
+      "@@type": "SoftwareApplication",
       "name": "EasyHand",
       "operatingSystem": "Web",
       "applicationCategory": "FinanceApplication",
       "description": "EasyHand adalah solusi fintech modern untuk transaksi cepat dan aman PPOB dan tagihan.",
       "url": "https://easyhand.my.id/",
       "publisher": {
-        "@type": "Organization",
+        "@@type": "Organization",
         "name": "EasyHand Fintech"
       }
     }
