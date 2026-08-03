@@ -345,6 +345,19 @@ class PurchaseProduct extends Page implements HasForms
                 'message' => $message,
                 'sn' => $result['data']['sn'] ?? null,
             ]);
+            
+            try {
+                $notifMsg = "<b>🛒 Transaksi PPOB Baru!</b>\n\n"
+                     . "<b>Member:</b> {$user->name}\n"
+                     . "<b>Produk:</b> {$transaction->buyer_sku_code}\n"
+                     . "<b>Tujuan:</b> {$transaction->customer_no}\n"
+                     . "<b>Harga:</b> Rp " . number_format($finalPrice, 0, ',', '.') . "\n"
+                     . "<b>Status:</b> " . strtoupper($status) . "\n"
+                     . "<b>SN/Pesan:</b> " . ($result['data']['sn'] ?? $message);
+                \App\Services\TelegramService::sendToGroup($notifMsg);
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error('Gagal kirim notif telegram trx: ' . $e->getMessage());
+            }
 
             if ($status === 'Gagal') {
                 // Refund

@@ -23,6 +23,16 @@ class Register extends BaseRegister
         $user->saldo = 0;
         $user->save();
         
+        try {
+            $msg = "<b>🎉 Pengguna Baru Terdaftar!</b>\n\n"
+                 . "<b>Nama:</b> {$user->name}\n"
+                 . "<b>Email:</b> {$user->email}\n"
+                 . "<b>Waktu:</b> " . now()->format('d M Y H:i:s');
+            \App\Services\TelegramService::sendToGroup($msg);
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Gagal kirim notif telegram: ' . $e->getMessage());
+        }
+        
         return $user;
     }
 }

@@ -24,4 +24,23 @@ class CreateDeposit extends CreateRecord
     {
         return $this->getResource()::getUrl('view', ['record' => $this->record]);
     }
+
+    protected function afterCreate(): void
+    {
+        try {
+            $deposit = $this->record;
+            $user = auth()->user();
+            
+            $msg = "<b>💰 Request Deposit Baru!</b>\n\n"
+                 . "<b>Member:</b> {$user->name} ({$user->email})\n"
+                 . "<b>Nominal:</b> Rp " . number_format($deposit->amount, 0, ',', '.') . "\n"
+                 . "<b>Kode Unik:</b> {$deposit->unique_code}\n"
+                 . "<b>Total Transfer:</b> Rp " . number_format($deposit->total_transfer, 0, ',', '.') . "\n"
+                 . "<b>Status:</b> PENDING";
+                 
+            \App\Services\TelegramService::sendToGroup($msg);
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Gagal kirim notif telegram deposit: ' . $e->getMessage());
+        }
+    }
 }
