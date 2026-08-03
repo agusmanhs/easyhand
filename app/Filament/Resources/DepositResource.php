@@ -110,6 +110,17 @@ class DepositResource extends Resource
                         $user->saldo = $user->saldo + $record->total_transfer;
                         $user->save();
                         \Filament\Notifications\Notification::make()->title('Deposit Berhasil Disetujui')->success()->send();
+                        
+                        try {
+                            $msg = "<b>✅ Deposit Disetujui!</b>\n\n"
+                                 . "<b>Member:</b> {$user->name}\n"
+                                 . "<b>Metode:</b> {$record->paymentMethod->name}\n"
+                                 . "<b>Nominal:</b> Rp " . number_format($record->total_transfer, 0, ',', '.') . "\n"
+                                 . "<b>Status:</b> BERHASIL MASUK KE SALDO";
+                            \App\Services\TelegramService::sendToGroup($msg);
+                        } catch (\Exception $e) {
+                            \Illuminate\Support\Facades\Log::error('Gagal kirim notif telegram deposit acc: ' . $e->getMessage());
+                        }
                     }),
                 Tables\Actions\Action::make('reject')
                     ->label('Tolak')
@@ -123,6 +134,18 @@ class DepositResource extends Resource
                     ->action(function (array $data, Deposit $record) {
                         $record->update(['status' => 'rejected', 'notes' => $data['notes']]);
                         \Filament\Notifications\Notification::make()->title('Deposit Ditolak')->success()->send();
+                        
+                        try {
+                            $user = $record->user;
+                            $msg = "<b>❌ Deposit Ditolak!</b>\n\n"
+                                 . "<b>Member:</b> {$user->name}\n"
+                                 . "<b>Metode:</b> {$record->paymentMethod->name}\n"
+                                 . "<b>Nominal:</b> Rp " . number_format($record->total_transfer, 0, ',', '.') . "\n"
+                                 . "<b>Alasan:</b> {$data['notes']}";
+                            \App\Services\TelegramService::sendToGroup($msg);
+                        } catch (\Exception $e) {
+                            \Illuminate\Support\Facades\Log::error('Gagal kirim notif telegram deposit tolak: ' . $e->getMessage());
+                        }
                     }),
                 Tables\Actions\ViewAction::make(),
             ])
