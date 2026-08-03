@@ -217,7 +217,7 @@ class PurchaseProduct extends Page implements HasForms
             $apiKey = Setting::where('key', 'digiflazz_production_key')->value('value');
             $signature = md5($username . $apiKey . $refId);
 
-            $response = Http::post('https://api.digiflazz.com/v1/transaction', [
+            $response = Http::timeout(60)->post('https://api.digiflazz.com/v1/transaction', [
                 'username' => $username,
                 'buyer_sku_code' => $product->buyer_sku_code,
                 'customer_no' => $customerNo,
@@ -243,7 +243,7 @@ class PurchaseProduct extends Page implements HasForms
         $signature = md5($username . $apiKey . $refId);
 
         try {
-            $response = Http::post('https://api.digiflazz.com/v1/transaction', [
+            $response = Http::timeout(60)->post('https://api.digiflazz.com/v1/transaction', [
                 'commands' => 'inq-pasca',
                 'username' => $username,
                 'buyer_sku_code' => $product->buyer_sku_code,
@@ -288,7 +288,8 @@ class PurchaseProduct extends Page implements HasForms
             $user->saldo -= $finalPrice;
             $user->save();
 
-            $refId = 'PAY-' . time() . '-' . rand(1000, 9999);
+            // Save transaction using the SAME ref_id as the inquiry
+            $refId = $this->inquiryRefId;
 
             // Save transaction
             $transaction = Transaction::create([
@@ -309,7 +310,7 @@ class PurchaseProduct extends Page implements HasForms
             $apiKey = Setting::where('key', 'digiflazz_production_key')->value('value');
             $signature = md5($username . $apiKey . $refId);
 
-            $response = Http::post('https://api.digiflazz.com/v1/transaction', [
+            $response = Http::timeout(60)->post('https://api.digiflazz.com/v1/transaction', [
                 'commands' => 'pay-pasca',
                 'username' => $username,
                 'buyer_sku_code' => $product->buyer_sku_code,

@@ -33,6 +33,7 @@ class TransactionResource extends Resource
                 Tables\Columns\TextColumn::make('customer_no')->label('No. Tujuan')->searchable(),
                 Tables\Columns\TextColumn::make('buyer_sku_code')->label('Kode Produk')->searchable(),
                 Tables\Columns\TextColumn::make('amount')->label('Harga')->money('idr', true),
+                Tables\Columns\TextColumn::make('message')->label('Pesan Digiflazz')->wrap(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
@@ -58,13 +59,21 @@ class TransactionResource extends Resource
                         $apiKey = \App\Models\Setting::where('key', 'digiflazz_production_key')->value('value');
                         $signature = md5($username . $apiKey . $record->ref_id);
 
-                        $response = Http::post('https://api.digiflazz.com/v1/transaction', [
+                        $payload = [
                             'username' => $username,
                             'buyer_sku_code' => $record->buyer_sku_code,
                             'customer_no' => $record->customer_no,
                             'ref_id' => $record->ref_id,
                             'sign' => $signature,
-                        ]);
+                        ];
+
+                        // Check if it's a postpaid product
+                        $product = \App\Models\Product::where('buyer_sku_code', $record->buyer_sku_code)->first();
+                        if ($product && strtolower($product->category) === 'pascabayar') {
+                            $payload['commands'] = 'status-pasca';
+                        }
+
+                        $response = Http::timeout(60)->post('https://api.digiflazz.com/v1/transaction', $payload);
 
                         $result = $response->json();
 
