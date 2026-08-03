@@ -13,4 +13,9 @@ class Transaction extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class, 'buyer_sku_code', 'buyer_sku_code');
+    }
 }
