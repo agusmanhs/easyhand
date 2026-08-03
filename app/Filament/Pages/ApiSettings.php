@@ -31,6 +31,7 @@ class ApiSettings extends Page implements HasForms
         $this->form->fill([
             'digiflazz_username' => Setting::getVal('digiflazz_username'),
             'digiflazz_production_key' => Setting::getVal('digiflazz_production_key'),
+            'digiflazz_webhook_secret' => Setting::getVal('digiflazz_webhook_secret'),
         ]);
     }
 
@@ -49,6 +50,11 @@ class ApiSettings extends Page implements HasForms
                             ->password()
                             ->revealable()
                             ->required(),
+                        TextInput::make('digiflazz_webhook_secret')
+                            ->label('Webhook Secret')
+                            ->password()
+                            ->revealable()
+                            ->helperText('Kosongkan jika Anda menonaktifkan fitur secret di Webhook Digiflazz.'),
                     ])
             ])
             ->statePath('data');
@@ -60,6 +66,7 @@ class ApiSettings extends Page implements HasForms
 
         Setting::setVal('digiflazz_username', $data['digiflazz_username']);
         Setting::setVal('digiflazz_production_key', $data['digiflazz_production_key']);
+        Setting::setVal('digiflazz_webhook_secret', $data['digiflazz_webhook_secret'] ?? '');
 
         Notification::make()
             ->title('Settings Saved')
