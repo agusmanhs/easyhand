@@ -49,6 +49,12 @@ class TransactionResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\Action::make('print_receipt')
+                    ->label('Cetak Struk')
+                    ->icon('heroicon-o-printer')
+                    ->color('success')
+                    ->url(fn (Transaction $record) => route('receipt.show', ['ref_id' => $record->ref_id]))
+                    ->openUrlInNewTab(),
                 Tables\Actions\Action::make('check_status')
                     ->label('Cek Status')
                     ->icon('heroicon-o-arrow-path')
