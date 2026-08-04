@@ -104,7 +104,7 @@
         // Persiapan teks mentah untuk RawBT
         $storeName = $transaction->user->store_name ?: 'Toko Anda';
         
-        // Fungsi pembantu agar text rata kanan-kiri (Total 32 karakter untuk 58mm printer)
+        // --- 1. Teks untuk RawBT ---
         $charLimit = 32;
         $rawText = "[C]" . $storeName . "\n";
         $rawText .= "[C]Struk Pembelian / Pembayaran\n";
@@ -130,16 +130,53 @@
         $rawText .= "[C]" . strtoupper($transaction->status) . "\n";
         $rawText .= "[C]Terima kasih telah berbelanja!\n";
         
-        // RawBT mendukung tag seperti [C] untuk Center, [R] untuk Right, dll.
         $base64Text = base64_encode($rawText);
+
+        // --- 2. Format Byte ESC/POS untuk Web Bluetooth API ---
+        $ESC = "\x1b";
+        $INIT = $ESC . "@"; 
+        $CENTER = $ESC . "a" . "\x01"; 
+        $LEFT = $ESC . "a" . "\x00"; 
+        
+        $escpos = $INIT;
+        $escpos .= $CENTER . $storeName . "\n";
+        $escpos .= "Struk Pembelian / Pembayaran\n";
+        $escpos .= str_repeat("-", 32) . "\n";
+        
+        $escpos .= $LEFT;
+        $escpos .= "Tanggal: " . $transaction->created_at->format('d/m/Y H:i') . "\n";
+        $escpos .= "Ref ID : " . $transaction->ref_id . "\n";
+        $escpos .= str_repeat("-", 32) . "\n";
+        
+        $escpos .= "Produk : " . $produk . "\n";
+        $escpos .= "Tujuan : " . $transaction->customer_no . "\n";
+        $escpos .= str_repeat("-", 32) . "\n";
+        
+        if($transaction->sn) {
+            $escpos .= $CENTER . "SN / Token:\n" . $transaction->sn . "\n" . str_repeat("-", 32) . "\n";
+        }
+        
+        $escpos .= $LEFT . "TOTAL: Rp " . $total . "\n\n";
+        $escpos .= $CENTER . strtoupper($transaction->status) . "\n";
+        $escpos .= "Terima kasih telah berbelanja!\n";
+        $escpos .= "\n\n\n"; // Feed kertas 3 baris
+        
+        // Ubah string menjadi array byte (integer)
+        $escposBytes = json_encode(array_values(unpack('C*', $escpos)));
     @endphp
 
     <!-- Area Tombol Aksi (Tidak ikut terprint) -->
     <div class="action-buttons no-print">
         <div style="margin-bottom: 10px; font-family: Arial; font-size: 13px; color: #555;">Pilih metode cetak:</div>
+        
+        <button onclick="printWebBluetooth()" class="btn" style="background-color: #f39c12;">
+            🚀 Cetak Web Bluetooth (Native)
+        </button>
+
         <a href="intent:base64,{{ $base64Text }}#Intent;scheme=rawbt;package=ru.a402d.rawbtprinter;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dru.a402d.rawbtprinter;end;" class="btn btn-green">
-            🖨️ Cetak via Bluetooth (RawBT)
+            🖨️ Cetak via Aplikasi RawBT
         </a>
+
         <button onclick="window.print()" class="btn btn-blue">
             📄 Cetak Standar Browser
         </button>
@@ -203,5 +240,87 @@
             Simpan struk ini sebagai bukti pembayaran yang sah.
         </div>
     </div>
+
+    <!-- Javascript untuk Web Bluetooth API -->
+    <script>
+        async function printWebBluetooth() {
+            if (!navigator.bluetooth) {
+                alert("Browser ini tidak mendukung Web Bluetooth API. Gunakan Google Chrome di Android dan pastikan URL sudah HTTPS.");
+                return;
+            }
+
+            try {
+                // Meminta akses ke perangkat Bluetooth dengan service yang sering dipakai printer thermal
+                const device = await navigator.bluetooth.requestDevice({
+                    acceptAllDevices: true,
+                    optionalServices: [
+                        '000018f0-0000-1000-8000-00805f9b34fb', // Standard Serial/Printer
+                        'e7810a71-73ae-499d-8c15-faa9aef0c3f2', // Generic Thermal Printer
+                        '49535343-fe7d-4ae5-8fa9-9fafd205e455'  // ISSC
+                    ]
+                });
+
+                if (!device) return;
+                
+                alert("Menghubungkan ke " + device.name + "...");
+                const server = await device.gatt.connect();
+                
+                let characteristic = null;
+                const serviceUUIDs = [
+                    '000018f0-0000-1000-8000-00805f9b34fb',
+                    'e7810a71-73ae-499d-8c15-faa9aef0c3f2',
+                    '49535343-fe7d-4ae5-8fa9-9fafd205e455'
+                ];
+
+                for (const uuid of serviceUUIDs) {
+                    try {
+                        const service = await server.getPrimaryService(uuid);
+                        if (service) {
+                            const characteristics = await service.getCharacteristics();
+                            characteristic = characteristics.find(c => c.properties.write || c.properties.writeWithoutResponse);
+                            if (characteristic) break;
+                        }
+                    } catch(e) {
+                        // Skip if service not found
+                    }
+                }
+
+                if (!characteristic) {
+                    alert("Tidak menemukan Service Printer yang kompatibel pada perangkat ini.");
+                    device.gatt.disconnect();
+                    return;
+                }
+
+                // Mengambil byte ESC/POS dari PHP
+                const printDataArray = {!! $escposBytes !!};
+                const printData = new Uint8Array(printDataArray);
+
+                // Kirim data secara bertahap (chunking) karena limitasi buffer BLE (biasanya 20-512 byte)
+                const CHUNK_SIZE = 100;
+                for (let i = 0; i < printData.length; i += CHUNK_SIZE) {
+                    const chunk = printData.slice(i, i + CHUNK_SIZE);
+                    if (characteristic.properties.write) {
+                        await characteristic.writeValue(chunk);
+                    } else if (characteristic.properties.writeWithoutResponse) {
+                        await characteristic.writeValueWithoutResponse(chunk);
+                    }
+                    // Delay sedikit antar chunk untuk mencegah buffer printer penuh
+                    await new Promise(resolve => setTimeout(resolve, 50));
+                }
+                
+                device.gatt.disconnect();
+                alert("Struk berhasil dikirim ke printer!");
+
+            } catch (error) {
+                console.error(error);
+                if (error.name === 'NotFoundError') {
+                    // User membatalkan pemilihan bluetooth
+                    console.log('Bluetooth selection cancelled by user.');
+                } else {
+                    alert("Gagal mencetak: " + error.message);
+                }
+            }
+        }
+    </script>
 </body>
 </html>
