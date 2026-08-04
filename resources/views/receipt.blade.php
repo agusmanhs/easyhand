@@ -62,23 +62,90 @@
         .status-pending { border: 1px dashed #000; }
         .status-failed { border: 1px solid #000; text-decoration: line-through; }
         
+        /* Action Buttons Styling */
+        .action-buttons {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .btn {
+            display: inline-block;
+            padding: 8px 12px;
+            margin: 5px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-blue { background-color: #007bff; }
+        .btn-green { background-color: #28a745; }
+        
         @media print {
-            body {
-                background-color: #fff;
-            }
+            body { background-color: #fff; }
             .receipt-container {
                 width: 100%;
                 margin: 0;
                 padding: 0;
                 box-shadow: none;
             }
-            @page {
-                margin: 0;
-            }
+            .no-print { display: none !important; }
+            @page { margin: 0; }
         }
     </style>
 </head>
-<body onload="window.print()">
+<body>
+    @php
+        // Persiapan teks mentah untuk RawBT
+        $storeName = $transaction->user->store_name ?: 'Toko Anda';
+        
+        // Fungsi pembantu agar text rata kanan-kiri (Total 32 karakter untuk 58mm printer)
+        $charLimit = 32;
+        $rawText = "[C]" . $storeName . "\n";
+        $rawText .= "[C]Struk Pembelian / Pembayaran\n";
+        $rawText .= str_repeat("-", $charLimit) . "\n";
+        $rawText .= "Tanggal: " . $transaction->created_at->format('d/m/Y H:i') . "\n";
+        $rawText .= "Ref ID : " . $transaction->ref_id . "\n";
+        $rawText .= str_repeat("-", $charLimit) . "\n";
+        
+        $produk = $transaction->product ? $transaction->product->product_name : $transaction->buyer_sku_code;
+        $rawText .= "Produk : " . $produk . "\n";
+        $rawText .= "Tujuan : " . $transaction->customer_no . "\n";
+        $rawText .= str_repeat("-", $charLimit) . "\n";
+        
+        if($transaction->sn) {
+            $rawText .= "[C]SN / Token:\n";
+            $rawText .= "[C]" . $transaction->sn . "\n";
+            $rawText .= str_repeat("-", $charLimit) . "\n";
+        }
+        
+        $total = number_format($transaction->amount + ($transaction->user->store_markup ?? 0), 0, ',', '.');
+        $rawText .= "[R]TOTAL: Rp " . $total . "\n\n";
+        
+        $rawText .= "[C]" . strtoupper($transaction->status) . "\n";
+        $rawText .= "[C]Terima kasih telah berbelanja!\n";
+        
+        // RawBT mendukung tag seperti [C] untuk Center, [R] untuk Right, dll.
+        $base64Text = base64_encode($rawText);
+    @endphp
+
+    <!-- Area Tombol Aksi (Tidak ikut terprint) -->
+    <div class="action-buttons no-print">
+        <div style="margin-bottom: 10px; font-family: Arial; font-size: 13px; color: #555;">Pilih metode cetak:</div>
+        <a href="intent:base64,{{ $base64Text }}#Intent;scheme=rawbt;package=ru.a402d.rawbtprinter;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dru.a402d.rawbtprinter;end;" class="btn btn-green">
+            🖨️ Cetak via Bluetooth (RawBT)
+        </a>
+        <button onclick="window.print()" class="btn btn-blue">
+            📄 Cetak Standar Browser
+        </button>
+    </div>
+
+    <!-- Area Struk yang akan diprint jika menggunakan standar browser -->
     <div class="receipt-container">
         <div class="header">
             <div class="store-name">{{ $transaction->user->store_name ?: 'Toko Anda' }}</div>
