@@ -227,7 +227,7 @@ class PurchaseProduct extends Page implements HasForms
 
             $this->handleDigiflazzResponse($response, $transaction, $user, $finalPrice);
 
-            return redirect()->to('/member');
+            return redirect()->to('/member/transactions');
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -325,7 +325,7 @@ class PurchaseProduct extends Page implements HasForms
             $this->inquiryData = null;
             $this->inquiryRefId = null;
 
-            return redirect()->to('/member');
+            return redirect()->to('/member/transactions');
 
         } catch (\Exception $e) {
             DB::rollBack();
