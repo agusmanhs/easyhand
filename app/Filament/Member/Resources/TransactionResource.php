@@ -116,6 +116,31 @@ class TransactionResource extends Resource
             ->bulkActions([]);
     }
 
+    public static function infolist(\Filament\Infolists\Infolist $infolist): \Filament\Infolists\Infolist
+    {
+        return $infolist
+            ->schema([
+                \Filament\Infolists\Components\Section::make('Rincian Transaksi')
+                    ->schema([
+                        \Filament\Infolists\Components\TextEntry::make('ref_id')->label('Ref ID'),
+                        \Filament\Infolists\Components\TextEntry::make('customer_no')->label('Nomor Tujuan'),
+                        \Filament\Infolists\Components\TextEntry::make('buyer_sku_code')->label('Kode Produk / SKU'),
+                        \Filament\Infolists\Components\TextEntry::make('amount')->label('Total Bayar')->money('idr', true),
+                        \Filament\Infolists\Components\TextEntry::make('status')
+                            ->badge()
+                            ->color(fn (string $state): string => match ($state) {
+                                'Sukses' => 'success',
+                                'Gagal' => 'danger',
+                                'Pending' => 'warning',
+                                default => 'secondary',
+                            }),
+                        \Filament\Infolists\Components\TextEntry::make('sn')->label('SN / Token / Pesan')->columnSpanFull(),
+                        \Filament\Infolists\Components\TextEntry::make('message')->label('Pesan Server')->columnSpanFull(),
+                        \Filament\Infolists\Components\TextEntry::make('created_at')->label('Tanggal Transaksi')->dateTime(),
+                    ])->columns(2),
+            ]);
+    }
+
     public static function getRelations(): array
     {
         return [];
@@ -125,6 +150,7 @@ class TransactionResource extends Resource
     {
         return [
             'index' => Pages\ListTransactions::route('/'),
+            'view' => Pages\ViewTransaction::route('/{record}'),
         ];
     }
 }
