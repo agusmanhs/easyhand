@@ -369,7 +369,17 @@ class PurchaseProduct extends Page implements HasForms
                 Notification::make()->title('Transaksi Berhasil Dibuat')->success()->send();
             }
         } else {
-            Notification::make()->title('Gagal terhubung ke Digiflazz')->danger()->send();
+            // Error without 'data' wrapper
+            $message = $result['message'] ?? 'Respon tidak valid dari server pusat.';
+            $transaction->update([
+                'status' => 'Gagal',
+                'message' => $message,
+            ]);
+            
+            // Refund
+            $user->saldo += $finalPrice;
+            $user->save();
+            Notification::make()->title('Transaksi Gagal: ' . $message)->danger()->send();
         }
     }
 }
